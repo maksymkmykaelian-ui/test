@@ -67,11 +67,12 @@ button.p{
 button.on{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 12%,transparent);color:var(--ac);font-weight:600}
 button.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 22%,transparent)}
 button.no{border-color:var(--no);background:color-mix(in srgb,var(--no) 20%,transparent)}
+button.miss{border-color:var(--brass);border-style:dashed;background:color-mix(in srgb,var(--brass) 18%,transparent)}
 .mu{color:var(--mu);font:400 13px 'Fira Sans',system-ui,sans-serif;text-transform:uppercase;letter-spacing:.5px}
 .q{font:700 21px/1.3 'Old Standard TT','EB Garamond',Georgia,serif;margin-top:4px}
 .q::first-letter{color:var(--ac);font-size:1.45em}
 .bar{height:6px;border:1.5px solid var(--bd);border-radius:3px;margin-bottom:12px;background:rgba(0,0,0,.06);overflow:hidden}
-.bar i{display:block;height:100%;background:repeating-linear-gradient(45deg,var(--ac),var(--ac) 6px,var(--brass) 6px,var(--brass) 12px)}
+.bar i{display:block;height:100%;background:repeating-linear-gradient(45deg,var(--ac),var(--ac) 6px,var(--brass) 6px,var(--brass) 12px);transition:width .25s linear}
 .row{display:flex;gap:8px}.row button{text-align:center}
 .chip{display:inline-block;width:auto;padding:4px 8px;margin:4px 4px 0 0;font:500 12px 'Fira Sans',sans-serif;border-width:1.5px}
 .chip.act{background:var(--ac);color:#efe6d5;border-color:var(--ac)}
@@ -79,6 +80,9 @@ button.no{border-color:var(--no);background:color-mix(in srgb,var(--no) 20%,tran
 .done-item{opacity:.55;text-decoration:line-through}
 .stop-badge{display:inline-block;background:var(--no);color:#efe6d5;font:600 11px 'Fira Sans',sans-serif;padding:2px 6px;border-radius:2px;margin-left:6px;vertical-align:middle}
 .ml{font:600 15px 'Fira Sans',sans-serif;color:var(--ac)}
+.ing-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+.ing-grid button{margin-top:0;padding:10px;font-size:14px;text-align:center}
+.blitz-hud{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font:600 14px 'Fira Sans',sans-serif}
 </style></head><body>
 <div class="logo"><img src="IMG_1665.jpeg" alt="Буха-Rest"></div>
 <div class="nav"><span>Тест по меню</span> · Кухня · Бар</div><div class="orn">◄<i></i>⚙<i></i>►</div><div id="app"></div>
@@ -191,7 +195,7 @@ const B=[
 ["Лікери, настоянки","Baileys","17%","густий, солодкий, танучий, вершковий, зігріваючий; молочно-кавова і вершково-шоколадна смакова палітра",""],
 ["Лікери, настоянки","Sambuca","38%","яскравий анісовий аромат з цитрусовими нотами, злегка солодкуватий і пряний; п’ється чистою, з льодом або тоніком",""],
 ["Лікери, настоянки","Becherovka","38%","приємна солодкість з гіркотою, трав’янисто-терпкий післясмак; спочатку замислювалась як лікарський засіб",""],
-["Лікери, настоянки","Jagermeister","35%","складний, виразний, різноманітний, трав’яний, терпкий, але водночас м’який; 56 інгредієнтів (трави, коріння, кора, фрукти, деревина), 12 місяців в дубових бочках",""],
+["Лікери, настоянки","Jagermeister","35%","складний, виразний, різноманітний, трав’яний, терпкий, але водночас м’який; 56 інгредінтів (трави, коріння, кора, фрукти, деревина), 12 місяців в дубових бочках",""],
 ["Віскі","Jameson (ірландський)","40%","дуже м’який, тони горіха, ванілі і дерева, легка хересна солодкість; вважається наймякшим у світі; ячмінь і кукурудза, кожен зі злаків ферментується і тричі дистиляється окремо",""],
 ["Віскі","Tullamore Dew (ірландський)","40%","приємні ноти солоду зіставляються з паленим деревом, тривалий ванільний смак",""],
 ["Віскі","Jack Daniels (американський)","40%","ванільні палички з карамельною присипкою, деревні ноти, легкий димний післясмак; бродіння на кислому суслі, вода Теннессі",""],
@@ -225,7 +229,7 @@ const B=[
 ["Коктейлі","Б-52 (шот)","28%","солодкий кавово-вершковий смак з яскравим апельсиновим фінішем","кавовий лікер Калуа, вершковий лікер Бейліз, апельсиновий лікер Тріпл Сек"],
 ["Коктейлі","Піна Колада","12%","ніжний тропічний, вершково-кокосовий смак із солодким ананасом","світлий ром, кокосове молоко або лікер, ананасовий сік, вершки"]];
 
-/* ТЕХКАРТИ ДЛЯ БАР-ШЕЙКЕРА */
+/* ТЕХКАРТИ ДЛЯ БАР-ШЕЙКЕРА ТА КОНСТРУКТОРА */
 const SPECS=[
  {n:"Апероль Шприц",m:"Білд (у винний келих з льодом)",g:"слайс апельсина",tags:["Легкий","Гіркуватий","Ігристе","Без вершків"],
   ing:[{t:"Апероль",v:60,u:"мл"},{t:"Просекко (ігристе)",v:90,u:"мл"},{t:"Содова",v:30,u:"мл"}]},
@@ -289,7 +293,7 @@ const Q=[
 ["Віскі","Ячмінь для димного аромату сушать над…","гарячим торфом","дубовою тріскою","вугіллям","яблуневими дровами"],
 ["Віскі","Мінімальна витримка віскі в дубових бочках","три роки","один рік","п’ять років","десять років"]];
 const app=document.getElementById('app');
-let S={cat:'Усі',mode:'a',n:15},R,W={};
+let S={cat:'Усі',mode:'a',n:15},R,W={},BLITZ_BEST=+(localStorage.getItem('bbest')||0),BTMR=null;
 try{W=JSON.parse(localStorage.getItem('w2')||'{}')}catch(e){}
 const sv=()=>{try{localStorage.setItem('w2',JSON.stringify(W))}catch(e){}};
 const sh=a=>[...a].sort(()=>Math.random()-.5),L=s=>s.split(/,\s*/);
@@ -303,6 +307,7 @@ const BARC=new Set([...B.map(r=>r[0]),'Текіла','Горілка','Джин'
 const GR={'🍺 Весь бар':x=>BARC.has(x.c),'🍽 Вся кухня':x=>KC.has(x.c)};
 const fs=x=>Object.entries(x.f).map(([k,v])=>`<div><span class="mu">${k}:</span> ${v}</div>`).join('');
 const key=x=>x.n;
+function stopTmr(){if(BTMR){clearInterval(BTMR);BTMR=null}}
 function mk(c,ds){const o=[c];for(const d of sh(ds)){if(!o.includes(d))o.push(d);if(o.length>3)break}return sh(o).map(t=>({t,ok:t===c}))}
 function pickField(labs){
  const main=labs.filter(k=>k=='Склад'||k=='Смак / ноти');
@@ -313,7 +318,6 @@ function pickField(labs){
 function gen(x){
  if(x.t)return{q:x.n,o:mk(x.a,x.w),e:`<b>${x.a}</b>`,tag:x.c};
  const labs=Object.keys(x.f),tag=x.c,e=`<b>${x.n}</b>${fs(x)}`;
- /* РЕЖИМ СЛІПОЇ ДЕГУСТАЦІЇ ДЛЯ БАРУ */
  if(S.mode=='b'){
   const desc=x.f['Смак / ноти']||x.f['Склад']||Object.values(x.f)[0];
   let pool=I.filter(y=>y!==x&&BARC.has(y.c)&&y.c==x.c).map(y=>y.n);
@@ -352,6 +356,148 @@ document.addEventListener('click',e=>{if(e.target.closest('button,select'))fx('t
 function togSnd(){SND=!SND;try{localStorage.setItem('snd',SND?'1':'0')}catch(e){}if(SND)fx('ok');updOrn()}
 function updOrn(){const o=document.querySelector('.orn');if(o)o.innerHTML=`◄<i></i><span onclick="togSnd()" style="cursor:pointer;padding:2px 8px;border:1px solid var(--bd);border-radius:3px;font-size:13px">${SND?'⚙ 🔊':'⚙ 🔇'}</span><i></i>►`}
 
+/* --- КОНСТРУКТОР КОКТЕЙЛІВ «СКЛАДИ ПО ПАМ'ЯТІ» --- */
+const ALL_INGS=[...new Set(SPECS.flatMap(s=>s.ing.map(x=>x.t)))];
+let MIX=null;
+function startMix(){
+ stopTmr();
+ const list=sh([...SPECS]);
+ MIX={list,i:0,s:0,picked:new Set(),checked:false,opts:[]};
+ prepMix();
+}
+function prepMix(){
+ const sp=MIX.list[MIX.i];
+ const right=sp.ing.map(x=>x.t);
+ const wrong=sh(ALL_INGS.filter(t=>!right.includes(t))).slice(0,Math.max(4,9-right.length));
+ MIX.opts=sh([...right,...wrong]);
+ MIX.picked=new Set();
+ MIX.checked=false;
+ renderMix();
+}
+function togIng(idx){
+ if(MIX.checked)return;
+ const name=MIX.opts[idx];
+ if(MIX.picked.has(name))MIX.picked.delete(name);else MIX.picked.add(name);
+ renderMix();
+}
+function checkMix(){
+ const sp=MIX.list[MIX.i];
+ const right=new Set(sp.ing.map(x=>x.t));
+ const perfect=right.size===MIX.picked.size&&[...right].every(x=>MIX.picked.has(x));
+ MIX.checked=true;
+ if(perfect){MIX.s++;fx('ok')}else fx('no');
+ renderMix();
+}
+function nextMix(){
+ MIX.i++;
+ if(MIX.i<MIX.list.length)prepMix();
+ else{
+  fx('win');
+  app.innerHTML=`<div class="card"><div class="mu">Конструктор завершено</div><div class="q">Ідеально зібрано: ${MIX.s} / ${MIX.list.length}</div></div>
+  <button class="p" onclick="startMix()">Зіграти ще раз</button><button onclick="menu()">Налаштування</button>`;
+ }
+}
+function renderMix(){
+ const sp=MIX.list[MIX.i];
+ const right=new Set(sp.ing.map(x=>x.t));
+ const info=I.find(x=>x.n===sp.n);
+ app.innerHTML=`<div class="bar"><i style="width:${MIX.i/MIX.list.length*100}%"></i></div>
+ <div class="mu">${MIX.i+1}/${MIX.list.length} · Склади по пам’яті · ✓ ${MIX.s}</div>
+ <div class="card">
+  <div class="tag">Конструктор шейкера</div>
+  <div class="q">${sp.n}</div>
+  ${info&&info.f['Смак / ноти']?`<div style="margin-top:4px;font-style:italic;color:var(--mu)">«${info.f['Смак / ноти']}»</div>`:''}
+  <div class="mu" style="margin-top:8px">Обери всі інгредієнти (${MIX.picked.size} обрано):</div>
+ </div>
+ <div class="ing-grid">
+  ${MIX.opts.map((t,idx)=>{
+   let cls='';
+   if(!MIX.checked)cls=MIX.picked.has(t)?'on':'';
+   else{
+    if(right.has(t)&&MIX.picked.has(t))cls='ok';
+    else if(!right.has(t)&&MIX.picked.has(t))cls='no';
+    else if(right.has(t)&&!MIX.picked.has(t))cls='miss';
+   }
+   return `<button class="${cls}" ${MIX.checked?'disabled':''} onclick="togIng(${idx})">${t}</button>`;
+  }).join('')}
+ </div>
+ ${!MIX.checked
+  ?`<button class="p" style="margin-top:12px" onclick="checkMix()">🍸 Змішати в шейкері</button>`
+  :`<div class="card" style="margin-top:12px">
+     <div class="mu">Точна техкарта (${sp.m}):</div>
+     ${sp.ing.map(x=>`<div>• <b>${x.t}</b> — <span class="ml">${x.v} ${x.u}</span></div>`).join('')}
+     <div style="margin-top:4px"><span class="mu">Гарнір:</span> ${sp.g}</div>
+    </div>
+    <button class="p" onclick="nextMix()">${MIX.i+1<MIX.list.length?'Наступний коктейль':'Результат'}</button>`}
+ <button onclick="menu()" style="margin-top:8px">← Вийти в меню</button>`;
+}
+
+/* --- БЛІЦ-ГРА «60 СЕКУНД НА ЗМІНІ» --- */
+let BL=null;
+function startBlitz(){
+ stopTmr();
+ const pool=sh(ALL.filter(x=>S.cat=='Усі'||(GR[S.cat]?GR[S.cat](x):x.c==S.cat)));
+ BL={pool,idx:0,pts:0,streak:0,ok:0,tot:0,left:60};
+ BTMR=setInterval(()=>{
+  BL.left--;
+  const el=document.getElementById('bt');
+  if(el)el.textContent=BL.left+' с';
+  const br=document.getElementById('bb');
+  if(br)br.style.width=(BL.left/60*100)+'%';
+  if(BL.left<=0){stopTmr();endBlitz()}
+ },1000);
+ askBlitz();
+}
+function askBlitz(){
+ if(!BL||BL.left<=0)return;
+ const x=BL.pool[BL.idx%BL.pool.length];
+ BL.idx++;
+ const oldMode=S.mode;S.mode='a';
+ const g=gen(x);
+ S.mode=oldMode;
+ BL.g=g;
+ const mult=Math.min(4,1+Math.floor(BL.streak/3));
+ app.innerHTML=`<div class="bar"><i id="bb" style="width:${BL.left/60*100}%"></i></div>
+ <div class="blitz-hud">
+  <span style="color:var(--no)">⏱ <b id="bt">${BL.left} с</b></span>
+  <span>${BL.streak>=2?`🔥 Комбо x${mult}`:`Серія: ${BL.streak}`}</span>
+  <span>Бали: <b>${BL.pts}</b></span>
+ </div>
+ <div class="card"><div class="tag">${g.tag}</div><div class="q">${g.q}</div></div>
+ ${g.o.map((o,k)=>`<button id="bo${k}" onclick="pickBlitz(${k})">${o.t}</button>`).join('')}
+ <button onclick="stopTmr();menu()" style="margin-top:12px">← Перервати бліц</button>`;
+}
+function pickBlitz(k){
+ if(!BL||BL.left<=0)return;
+ const g=BL.g,ok=g.o[k].ok;
+ BL.tot++;
+ g.o.forEach((o,j)=>{const e=document.getElementById('bo'+j);if(e){e.disabled=true;if(o.ok)e.classList.add('ok')}});
+ if(ok){
+  BL.ok++;BL.streak++;
+  const mult=Math.min(4,1+Math.floor((BL.streak-1)/3));
+  BL.pts+=10*mult;
+  fx('ok');
+ }else{
+  const e=document.getElementById('bo'+k);if(e)e.classList.add('no');
+  BL.streak=0;
+  fx('no');
+ }
+ setTimeout(()=>{if(BL&&BL.left>0)askBlitz()},320);
+}
+function endBlitz(){
+ fx('win');
+ const isRec=BL.pts>BLITZ_BEST;
+ if(isRec){BLITZ_BEST=BL.pts;try{localStorage.setItem('bbest',String(BLITZ_BEST))}catch(e){}}
+ app.innerHTML=`<div class="card">
+  <div class="tag">Час вийшов!</div>
+  <div class="q" style="font-size:26px">Рахунок: ${BL.pts} балів ${isRec?'🏆 НОВИЙ РЕКОРД!':''}</div>
+  <div style="margin-top:8px">Точних відповідей: <b>${BL.ok} з ${BL.tot}</b></div>
+  <div class="mu" style="margin-top:4px">Рекорд зміни: ${BLITZ_BEST} балів</div>
+ </div>
+ <button class="p" onclick="startBlitz()">⚡ Ще 60 секунд</button>
+ <button onclick="menu()">Налаштування</button>`;
+}
+
 /* --- БАР-ШЕЙКЕР: ТЕХКАРТНИК + МНОЖНИК ПОРЦІЙ + ПІДБІР ПІД СМАК ГОСТЯ --- */
 let MULT=1,BTAGS=[],BQ='';
 const ALL_BTAGS=['Кислий','Солодкий','Гіркуватий','Міцний','Легкий','Без вершків','На джині','На віскі','На ромі','На текілі','Ігристе'];
@@ -361,6 +507,7 @@ function togBTag(t){
  barTool();
 }
 function barTool(){
+ stopTmr();
  const q=BQ.trim().toLowerCase();
  const list=SPECS.filter(sp=>{
   if(q&&!sp.n.toLowerCase().includes(q)&&!sp.ing.some(x=>x.t.toLowerCase().includes(q)))return false;
@@ -421,6 +568,7 @@ function hintOf(item){
 function defCourse(item){return BARC.has(item.c)?'Напої':'1-й курс'}
 
 function keeper(tab){
+ stopTmr();
  if(tab)KTAB=tab;
  const stopCnt=Object.keys(STOP).filter(k=>STOP[k]).length;
  app.innerHTML=`<button onclick="menu()" style="margin-top:0;margin-bottom:10px">← Назад до меню</button>
@@ -546,13 +694,20 @@ function renderRep(){
 
 /* --- ГОЛОВНЕ МЕНЮ, ШПАРГАЛКА ТА ТЕСТ --- */
 function menu(){
+ stopTmr();
  updOrn();
  const weak=Object.keys(W).filter(k=>W[k]>0).length;
  const stopCnt=Object.keys(STOP).filter(k=>STOP[k]).length;
  const b=(k,v,t)=>`<button class="${S[k]===v?'on':''}" onclick="S['${k}']=${typeof v=='number'?v:`'${v}'`};menu()">${t}</button>`;
  app.innerHTML=`<div class="card"><div class="mu">Категорія</div><select onchange="S.cat=this.value">${['Усі','🍺 Весь бар','🍽 Вся кухня',...cats].map(c=>`<option${c==S.cat?' selected':''}>${c}</option>`).join('')}</select></div>
- <div class="card"><div class="mu">Режим</div>${b('mode','a','Тест (смаки, ноти, склад)')}${b('mode','b','🥃 Сліпа дегустація (Бар)')}${b('mode','f','Картки: згадай сам')}</div>
- <div class="card"><div class="mu">Питань</div><div class="row">${b('n',10,'10')}${b('n',15,'15')}${b('n',30,'30')}${b('n',999,'Усі')}</div></div>
+ <div class="card"><div class="mu">Режим</div>
+  ${b('mode','a','Тест (смаки, ноти, склад)')}
+  ${b('mode','b','🥃 Сліпа дегустація (Бар)')}
+  ${b('mode','m','🧪 Склади коктейль по пам’яті')}
+  ${b('mode','z',`⚡ Бліц 60 сек ${BLITZ_BEST?`(рекорд: ${BLITZ_BEST})`:''}`)}
+  ${b('mode','f','Картки: згадай сам')}
+ </div>
+ ${S.mode=='a'||S.mode=='b'||S.mode=='f'?`<div class="card"><div class="mu">Питань</div><div class="row">${b('n',10,'10')}${b('n',15,'15')}${b('n',30,'30')}${b('n',999,'Усі')}</div></div>`:''}
  <button class="p" onclick="start()">Почати</button>
  <button onclick="barTool()" style="text-align:center;margin-top:10px">🍹 Бар-Шейкер (техкарти + підбір)</button>
  <button onclick="keeper('ord')" style="text-align:center;margin-top:8px">📋 Блокнот зміни (Кіпер) ${ORD.length?`[${ORD.length}]`:''} ${stopCnt?`· 🚫${stopCnt}`:''}</button>
@@ -560,6 +715,7 @@ function menu(){
  <p class="mu">Складні позиції (${weak}) зустрічаються частіше.</p>`}
 let CQ='',CC='Усі';
 function cheat(){
+ stopTmr();
  app.innerHTML=`<button onclick="menu()" style="margin-top:0;margin-bottom:12px">← Назад до меню</button>
  <div class="card">
   <div class="mu">Швидкий пошук (назва, склад, алерген)</div>
@@ -578,6 +734,8 @@ function renderCheat(){
  document.getElementById('clist').innerHTML=`<p class="mu">Знайдено позицій: ${list.length}</p>`+
   list.map(x=>`<div class="card"><div class="tag">${x.c}</div><div class="q" style="font-size:19px">${x.n} ${STOP[x.n]?'<span class="stop-badge">СТОП</span>':''}</div>${x.t?`<div style="margin-top:6px"><b>${x.a}</b></div>`:`<div style="margin-top:6px">${fs(x)}</div>`}</div>`).join('')}
 function start(){
+ if(S.mode=='m'){startMix();return}
+ if(S.mode=='z'){startBlitz();return}
  let pool=S.mode=='b'?I.filter(x=>BARC.has(x.c)&&(S.cat=='Усі'||S.cat=='🍺 Весь бар'||x.c==S.cat)):ALL.filter(x=>S.cat=='Усі'||(GR[S.cat]?GR[S.cat](x):x.c==S.cat));
  if(!pool.length)pool=I.filter(x=>BARC.has(x.c));
  pool=pool.map(x=>[Math.random()*(1+3*(W[key(x)]||0)),x]).sort((a,b)=>b[0]-a[0]).map(x=>x[1]).slice(0,S.n);
