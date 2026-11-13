@@ -329,3 +329,4 @@ function nxt(){R.i++;R.i<R.q.length?ask():end()}
 function end(){app.innerHTML=`<div class="card"><div class="q">${R.s} / ${R.q.length}</div></div>${R.bad.length?`<div class="card"><b>Повтори:</b>${R.bad.map(x=>`<p><b>${x.n}</b>${x.t?`<br><span class="mu">${x.a}</span>`:fs(x)}</p>`).join('')}</div>`:'<div class="card">Без помилок! 🎉</div>'}<button class="p" onclick="start()">Ще раз</button><button onclick="menu()">Налаштування</button>`}
 menu();
 </script></body></html>
+
