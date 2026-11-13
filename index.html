@@ -3,7 +3,7 @@
 <meta name="theme-color" content="#efe6d5"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Буха-Rest · Тест по меню</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;700&family=Old+Standard+TT:wght@400;700&family=Fira+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;700&family=Old+Standard+TT:wght@400;700&family=Fira+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#efe6d5;--paper:#e6dac3;--fg:#262523;--mu:#5e5649;--bd:#262523;
@@ -73,6 +73,11 @@ button.no{border-color:var(--no);background:color-mix(in srgb,var(--no) 20%,tran
 .bar{height:6px;border:1.5px solid var(--bd);border-radius:3px;margin-bottom:12px;background:rgba(0,0,0,.06);overflow:hidden}
 .bar i{display:block;height:100%;background:repeating-linear-gradient(45deg,var(--ac),var(--ac) 6px,var(--brass) 6px,var(--brass) 12px)}
 .row{display:flex;gap:8px}.row button{text-align:center}
+.chip{display:inline-block;width:auto;padding:4px 8px;margin:4px 4px 0 0;font:500 12px 'Fira Sans',sans-serif;border-width:1.5px}
+.chip.act{background:var(--ac);color:#efe6d5;border-color:var(--ac)}
+.warn{margin-top:6px;padding:6px 9px;border-left:3px solid var(--no);background:rgba(168,53,42,.1);font:500 13px/1.35 'Fira Sans',sans-serif;color:var(--no)}
+.done-item{opacity:.55;text-decoration:line-through}
+.stop-badge{display:inline-block;background:var(--no);color:#efe6d5;font:600 11px 'Fira Sans',sans-serif;padding:2px 6px;border-radius:2px;margin-left:6px;vertical-align:middle}
 </style></head><body>
 <div class="logo"><img src="IMG_1665.jpeg" alt="Буха-Rest"></div>
 <div class="nav"><span>Тест по меню</span> · Кухня · Бар</div><div class="orn">◄<i></i>⚙<i></i>►</div><div id="app"></div>
@@ -193,7 +198,7 @@ const B=[
 ["Віскі","Grant’s Family Reserve (шотландський)","40%","м’який, легкий, чудово збалансований, інтонації солоду, злегка солодкуватий через ванільні тони і бананові нотки; післясмак тривалий, гладкий",""],
 ["Віскі","Grant’s Triple Wood Smoky (шотландський)","40%","початкова димність змінюється фруктовою солодкістю з цитрусовою домінантою; у сухому післясмаку проступають таніни і димний нюанс",""],
 ["Віскі","Chivas Regal 12 YO","40%","вершковий, насичений смак з тонами спілих медових яблук, ванілі, горіхів та ірисок, багатий післясмак",""],
-["Віскі","Glenmorangie Original 10YO (шотландський односолод)","40%","злегка ванільний смак, філігранний цитрусовий присмак з нотками персика; невелика винокурня, регіон Хайленд, заснована в 1843 році",""],
+["Віскі","Glenmorangie Original 10YO (шотландський односолод)","40%","злегка ванільний смак, філігранний цитрувий присмак з нотками персика; невелика винокурня, регіон Хайленд, заснована в 1843 році",""],
 ["Текіла","Jose Cuervo Especial Silver","38%","більш ніж на 70% з соку блакитного агави; подвійна дистиляція, пів року в американських дубових бочках; баланс солодкості та кислотності, деревні ноти, дим, чорний перець; м’який і чистий посмак",""],
 ["Текіла","Jose Cuervo Especial Reposado","38%","солодка, витончена, з відтінком дуба та ванілі, нетривалий добре збалансований посмак",""],
 ["Горілка","Козацька рада (звичайна)","","звичайна",""],
@@ -278,6 +283,7 @@ function gen(x){
  let ds=I.filter(y=>y!==x&&y.f[lb]&&y.c==x.c).map(y=>y.f[lb]);
  if(ds.filter(d=>d!=x.f[lb]).length<3)ds=I.filter(y=>y!==x&&y.f[lb]).map(y=>y.f[lb]);
  return{q:`«${x.n}» — ${lb.toLowerCase()}?`,o:mk(x.f[lb],ds),e,tag}}
+
 let SND=localStorage.getItem('snd')!=='0',AC=null;
 function fx(t){
  if(t==='no'&&navigator.vibrate)try{navigator.vibrate([70,40,70])}catch(e){}
@@ -296,15 +302,168 @@ function fx(t){
 document.addEventListener('click',e=>{if(e.target.closest('button,select'))fx('tap')});
 function togSnd(){SND=!SND;try{localStorage.setItem('snd',SND?'1':'0')}catch(e){}if(SND)fx('ok');updOrn()}
 function updOrn(){const o=document.querySelector('.orn');if(o)o.innerHTML=`◄<i></i><span onclick="togSnd()" style="cursor:pointer;padding:2px 8px;border:1px solid var(--bd);border-radius:3px;font-size:13px">${SND?'⚙ 🔊':'⚙ 🔇'}</span><i></i>►`}
+
+/* --- РОЗУМНИЙ БЛОКНОТ ЗМІНИ (КІПЕР) + СТОП-ЛИСТ + ЗВІТ --- */
+let ORD=[],STOP={},HIST=[];
+try{
+ ORD=JSON.parse(localStorage.getItem('ord1')||'[]');
+ STOP=JSON.parse(localStorage.getItem('stop1')||'{}');
+ HIST=JSON.parse(localStorage.getItem('hist1')||'[]');
+}catch(e){}
+const svK=()=>{try{
+ localStorage.setItem('ord1',JSON.stringify(ORD));
+ localStorage.setItem('stop1',JSON.stringify(STOP));
+ localStorage.setItem('hist1',JSON.stringify(HIST));
+}catch(e){}};
+let KQ='',KTAB='ord';
+const COURSES=['1-й курс','2-й курс','Напої','З собою'];
+const QTAGS=['без цибулі','без гострого','медіум','без льоду','хліб/грінки'];
+
+function hintOf(item){
+ const h=[];
+ if(item.f['Алергени'])h.push('Алерген: '+item.f['Алергени']);
+ if(item.f['Рекомендації'])h.push(item.f['Рекомендації']);
+ if(item.f['Час'])h.push('Час: '+item.f['Час']);
+ return h.join(' · ');
+}
+function defCourse(item){return BARC.has(item.c)?'Напої':'1-й курс'}
+
+function keeper(tab){
+ if(tab)KTAB=tab;
+ const stopCnt=Object.keys(STOP).filter(k=>STOP[k]).length;
+ app.innerHTML=`<button onclick="menu()" style="margin-top:0;margin-bottom:10px">← Назад до меню</button>
+ <div class="row" style="margin-bottom:12px">
+  <button class="${KTAB==='ord'?'on':''}" onclick="keeper('ord')">📋 Записник (${ORD.length})</button>
+  <button class="${KTAB==='rep'?'on':''}" onclick="keeper('rep')">📊 Звіт (${HIST.length})</button>
+ </div><div id="kbody"></div>`;
+ if(KTAB==='rep')renderRep();else renderOrd(stopCnt);
+}
+
+function renderOrd(stopCnt){
+ const kb=document.getElementById('kbody');
+ const q=KQ.trim().toLowerCase();
+ const matches=q?I.filter(x=>x.n.toLowerCase().includes(q)||x.c.toLowerCase().includes(q)).slice(0,8):[];
+ const stops=Object.keys(STOP).filter(k=>STOP[k]);
+ kb.innerHTML=`
+ <div class="card">
+  <div class="mu">Додати в замовлення або в СТОП-ЛИСТ</div>
+  <input id="kq" type="search" value="${KQ}" placeholder="Введи 3 літери: стейк, сало, чіз..." oninput="KQ=this.value;renderOrd(${stopCnt})">
+  ${matches.length?`<div style="margin-top:8px">${matches.map(x=>{
+   const isSt=!!STOP[x.n];
+   return `<div style="display:flex;gap:6px;margin-top:6px">
+    <button style="margin:0;flex:1;${isSt?'opacity:.55;text-decoration:line-through':''}" onclick="addOrd('${x.n.replace(/'/g,"\\'")}')">
+     + ${x.n} ${isSt?'<span class="stop-badge">СТОП</span>':''}
+    </button>
+    <button class="${isSt?'no':''}" style="margin:0;width:auto;padding:10px 12px;text-align:center" onclick="togStop('${x.n.replace(/'/g,"\\'")}')">${isSt?'У меню':'СТОП'}</button>
+   </div>`}).join('')}</div>`:(q?'<p class="mu" style="margin-top:8px">Нічого не знайдено</p>':'')}
+  ${stops.length?`<div style="margin-top:10px;padding-top:8px;border-top:1px dashed var(--bd)">
+   <div class="mu" style="color:var(--no)">🚫 Зараз у стоп-листі (${stops.length}):</div>
+   ${stops.map(n=>`<button class="chip no" onclick="togStop('${n.replace(/'/g,"\\'")}')">✕ ${n}</button>`).join('')}
+  </div>`:''}
+ </div>
+ <div id="ordList"></div>`;
+ renderOrdList();
+ const inp=document.getElementById('kq');
+ if(inp&&KQ){inp.focus();inp.setSelectionRange(KQ.length,KQ.length)}
+}
+
+function addOrd(name){
+ const item=I.find(x=>x.n===name);
+ if(!item)return;
+ if(STOP[name])fx('no');else fx('ok');
+ ORD.unshift({id:Date.now()+Math.random(),n:item.n,c:item.c,crs:defCourse(item),tags:[],done:false,hint:hintOf(item)});
+ KQ='';svK();keeper('ord');
+}
+function togStop(name){
+ STOP[name]=!STOP[name];
+ if(!STOP[name])delete STOP[name];
+ fx(STOP[name]?'no':'ok');svK();keeper('ord');
+}
+function togDone(id){
+ const o=ORD.find(x=>x.id===id);if(!o)return;
+ o.done=!o.done;fx(o.done?'ok':'tap');svK();renderOrdList();
+}
+function setCourse(id,crs){
+ const o=ORD.find(x=>x.id===id);if(!o)return;
+ o.crs=crs;svK();renderOrdList();
+}
+function togTag(id,tag){
+ const o=ORD.find(x=>x.id===id);if(!o)return;
+ const i=o.tags.indexOf(tag);
+ if(i>=0)o.tags.splice(i,1);else o.tags.push(tag);
+ svK();renderOrdList();
+}
+function delOrd(id){
+ ORD=ORD.filter(x=>x.id!==id);svK();keeper('ord');
+}
+function archiveOrd(){
+ if(!ORD.length)return;
+ const now=new Date();
+ const tm=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+ ORD.forEach(o=>HIST.unshift({n:o.n,c:o.c,crs:o.crs,tags:o.tags,tm}));
+ ORD=[];fx('win');svK();keeper('ord');
+}
+
+function renderOrdList(){
+ const box=document.getElementById('ordList');if(!box)return;
+ if(!ORD.length){box.innerHTML=`<div class="card"><div class="mu">Записник порожній</div><div style="margin-top:4px">Почни вводити назву страви чи напою зверху — блокнот додасть позицію й підкаже важливі нюанси для гостя.</div></div>`;return}
+ const groups=COURSES.map(c=>({c,items:ORD.filter(x=>x.crs===c)})).filter(g=>g.items.length);
+ box.innerHTML=groups.map(g=>`
+  <div class="mu" style="margin:12px 0 6px">${g.c} (${g.items.length})</div>
+  ${g.items.map(o=>`<div class="card" style="padding:14px 16px;margin-bottom:10px">
+   <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+    <div onclick="togDone(${o.id})" style="cursor:pointer;flex:1" class="${o.done?'done-item':''}">
+     <div class="q" style="font-size:19px;margin:0">${o.done?'☑':'☐'} ${o.n}</div>
+     ${o.tags.length?`<div style="margin-top:4px;font:600 13px 'Fira Sans',sans-serif;color:var(--ac)">★ ${o.tags.join(', ')}</div>`:''}
+    </div>
+    <button onclick="delOrd(${o.id})" style="width:auto;margin:0;padding:4px 9px;font-size:13px">✕</button>
+   </div>
+   ${o.hint&&!o.done?`<div class="warn">⚠ ${o.hint}</div>`:''}
+   <div style="margin-top:8px">
+    ${COURSES.map(c=>`<button class="chip ${o.crs===c?'act':''}" onclick="setCourse(${o.id},'${c}')">${c}</button>`).join('')}
+   </div>
+   <div style="margin-top:4px">
+    ${QTAGS.map(t=>`<button class="chip ${o.tags.includes(t)?'act':''}" onclick="togTag(${o.id},'${t}')">+ ${t}</button>`).join('')}
+   </div>
+  </div>`).join('')}
+ `).join('')+`<button class="p" style="margin-top:8px" onclick="archiveOrd()">✓ Винесено / В архів зміни (${ORD.length})</button>`;
+}
+
+function renderRep(){
+ const kb=document.getElementById('kbody');
+ if(!HIST.length){kb.innerHTML=`<div class="card"><div class="mu">Архів зміни порожній</div><div style="margin-top:4px">Коли закриватимеш позиції кнопкою «В архів зміни», тут з’явиться статистика та топ-страви дня.</div></div>`;return}
+ const cnt={};HIST.forEach(x=>cnt[x.n]=(cnt[x.n]||0)+1);
+ const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,5);
+ kb.innerHTML=`
+ <div class="card">
+  <div class="mu">Підсумок поточної зміни</div>
+  <div class="q" style="font-size:24px">Винесено позицій: ${HIST.length}</div>
+  <div style="margin-top:10px"><span class="mu">Топ замовлень зміни:</span>
+   ${top.map(([n,c])=>`<div style="margin-top:4px">• <b>${n}</b> — ${c} шт.</div>`).join('')}
+  </div>
+ </div>
+ <div class="card">
+  <div class="mu">Історія винесених позицій</div>
+  ${HIST.slice(0,30).map(x=>`<div style="padding:6px 0;border-bottom:1px dashed rgba(38,37,35,.2);font-size:16px">
+   <span class="mu">${x.tm}</span> · <b>${x.n}</b> <span class="mu">(${x.crs})</span>
+   ${x.tags&&x.tags.length?`<div style="font:500 12px 'Fira Sans',sans-serif;color:var(--ac)">${x.tags.join(', ')}</div>`:''}
+  </div>`).join('')}
+ </div>
+ <button class="no" onclick="if(confirm('Очистити звіт зміни?')){HIST=[];svK();keeper('rep')}">🗑 Очистити звіт зміни</button>`;
+}
+
+/* --- ГОЛОВНЕ МЕНЮ, ШПАРГАЛКА ТА ТЕСТ --- */
 function menu(){
  updOrn();
  const weak=Object.keys(W).filter(k=>W[k]>0).length;
+ const stopCnt=Object.keys(STOP).filter(k=>STOP[k]).length;
  const b=(k,v,t)=>`<button class="${S[k]===v?'on':''}" onclick="S['${k}']=${typeof v=='number'?v:`'${v}'`};menu()">${t}</button>`;
  app.innerHTML=`<div class="card"><div class="mu">Категорія</div><select onchange="S.cat=this.value">${['Усі','🍺 Весь бар','🍽 Вся кухня',...cats].map(c=>`<option${c==S.cat?' selected':''}>${c}</option>`).join('')}</select></div>
  <div class="card"><div class="mu">Режим</div>${b('mode','a','Тест (без підказок за логікою)')}${b('mode','f','Картки: згадай сам')}</div>
  <div class="card"><div class="mu">Питань</div><div class="row">${b('n',10,'10')}${b('n',15,'15')}${b('n',30,'30')}${b('n',999,'Усі')}</div></div>
  <button class="p" onclick="start()">Почати</button>
- <button onclick="cheat()" style="text-align:center;margin-top:10px">📖 Шпаргалка зміни (пошук)</button>
+ <button onclick="keeper('ord')" style="text-align:center;margin-top:10px">📋 Блокнот зміни (Кіпер) ${ORD.length?`[${ORD.length}]`:''} ${stopCnt?`· 🚫${stopCnt}`:''}</button>
+ <button onclick="cheat()" style="text-align:center;margin-top:8px">📖 Шпаргалка зміни (пошук)</button>
  <p class="mu">Складні позиції (${weak}) зустрічаються частіше.</p>`}
 let CQ='',CC='Усі';
 function cheat(){
@@ -324,7 +483,7 @@ function renderCheat(){
   return txt.includes(q);
  });
  document.getElementById('clist').innerHTML=`<p class="mu">Знайдено позицій: ${list.length}</p>`+
-  list.map(x=>`<div class="card"><div class="tag">${x.c}</div><div class="q" style="font-size:19px">${x.n}</div>${x.t?`<div style="margin-top:6px"><b>${x.a}</b></div>`:`<div style="margin-top:6px">${fs(x)}</div>`}</div>`).join('')}
+  list.map(x=>`<div class="card"><div class="tag">${x.c}</div><div class="q" style="font-size:19px">${x.n} ${STOP[x.n]?'<span class="stop-badge">СТОП</span>':''}</div>${x.t?`<div style="margin-top:6px"><b>${x.a}</b></div>`:`<div style="margin-top:6px">${fs(x)}</div>`}</div>`).join('')}
 function start(){
  let p=ALL.filter(x=>S.cat=='Усі'||(GR[S.cat]?GR[S.cat](x):x.c==S.cat));
  p=p.map(x=>[Math.random()*(1+3*(W[key(x)]||0)),x]).sort((a,b)=>b[0]-a[0]).map(x=>x[1]).slice(0,S.n);
