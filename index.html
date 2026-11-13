@@ -78,6 +78,7 @@ button.no{border-color:var(--no);background:color-mix(in srgb,var(--no) 20%,tran
 .warn{margin-top:6px;padding:6px 9px;border-left:3px solid var(--no);background:rgba(168,53,42,.1);font:500 13px/1.35 'Fira Sans',sans-serif;color:var(--no)}
 .done-item{opacity:.55;text-decoration:line-through}
 .stop-badge{display:inline-block;background:var(--no);color:#efe6d5;font:600 11px 'Fira Sans',sans-serif;padding:2px 6px;border-radius:2px;margin-left:6px;vertical-align:middle}
+.ml{font:600 15px 'Fira Sans',sans-serif;color:var(--ac)}
 </style></head><body>
 <div class="logo"><img src="IMG_1665.jpeg" alt="Буха-Rest"></div>
 <div class="nav"><span>Тест по меню</span> · Кухня · Бар</div><div class="orn">◄<i></i>⚙<i></i>►</div><div id="app"></div>
@@ -100,7 +101,7 @@ const K=[
 ["Холодні закуски","Грінки","грінки гриль або грінки на фритюрі (як до біфштексу); якщо просять просто «грінки» — це ГРІНКИ ГРИЛЬ","10 хв","","вибиваємо по штучно"],
 ["Супи","Грибна крем-зупа","крем-суп із шампіньйонів з цибулею та вершками, сушені білі гриби; 2 грінки на заквасці, грибочок по центру","10-20 хв","","пропонуємо хліб"],
 ["Супи","Бульйон курячий","куряче філе су-від, половинка перепелиного яйця, локшина, зверху зелень","10-20 хв","","пропонуємо хліб; може бути без зелені"],
-["Супи","Бограч","гострий наваристий суп: свинина, морква, цибуля, корінь петрушки, картопля, корінь селери, домашнє тісто, перець чилі, томатний сік; подається зі сметаною, свіжою синьою цибулею та салом на половинці чорного хлібчика","10-20 хв","","гострий; пропонуємо додатковий хліб (там лише 1 половинка)"],
+["Супи","Бограч","гострий наваристий суп: свинина, морква, цибуля, корінь петрушки, картопля, корінь селери, домашнє тісто, перець чилі, томатний сік; подається зі сметаною, свіжою синьою цибулею та салом на половинці чорного хліба","10-20 хв","","гострий; пропонуємо додатковий хліб (там лише 1 половинка)"],
 ["Гарячі закуски","Сирні кульки з соусом тар-тар","тертий сир гауда, формується в кульки (10 шт), соус тартар","15-20 хв","","чудово підходить до пива"],
 ["Гарячі закуски","Пивна дошка","креветки в паніровці, шампіньйони фрі, нагетси, картопля фрі, цибулеві кільця, чіпси начос; соуси світ чилі і часниковий","15-20 хв","","чудово підходить до пива, для компанії"],
 ["Гарячі закуски","Ковбаски «пивні» з сиром","власні копчені ковбаски, карамелізована цибуля, тушкована в яблучному оцті, медово-гірчичний соус; подаються в сирному соусі; ковбаски порізані на шматочки (5-7 шт)","15-25 хв","мед","чудово підходить до пива"],
@@ -223,6 +224,31 @@ const B=[
 ["Коктейлі","Лонг-Айленд Айс Ті","22%","насичений, обманливо легкий кола-цитрусовий смак з міцним характером","горілка, джин, світлий ром, текіла, Тріпл Сек, лимонний сік, цукровий сироп, кола"],
 ["Коктейлі","Б-52 (шот)","28%","солодкий кавово-вершковий смак з яскравим апельсиновим фінішем","кавовий лікер Калуа, вершковий лікер Бейліз, апельсиновий лікер Тріпл Сек"],
 ["Коктейлі","Піна Колада","12%","ніжний тропічний, вершково-кокосовий смак із солодким ананасом","світлий ром, кокосове молоко або лікер, ананасовий сік, вершки"]];
+
+/* ТЕХКАРТИ ДЛЯ БАР-ШЕЙКЕРА */
+const SPECS=[
+ {n:"Апероль Шприц",m:"Білд (у винний келих з льодом)",g:"слайс апельсина",tags:["Легкий","Гіркуватий","Ігристе","Без вершків"],
+  ing:[{t:"Апероль",v:60,u:"мл"},{t:"Просекко (ігристе)",v:90,u:"мл"},{t:"Содова",v:30,u:"мл"}]},
+ {n:"Негроні",m:"Стір (у рокс на великий лід)",g:"цедра апельсина",tags:["Міцний","Гіркуватий","На джині","Без вершків"],
+  ing:[{t:"Джин",v:30,u:"мл"},{t:"Кампарі (біттер)",v:30,u:"мл"},{t:"Червоний солодкий вермут",v:30,u:"мл"}]},
+ {n:"Мохіто",m:"Білд / Мадл (хайбол, краш-лід)",g:"гілочка м’яти, долька лайма",tags:["Легкий","Кислий","Солодкий","На ромі","Без вершків"],
+  ing:[{t:"Світлий ром",v:50,u:"мл"},{t:"Цукровий сироп",v:20,u:"мл"},{t:"Сік лайма (або 0.5 лайма)",v:20,u:"мл"},{t:"Содова",v:100,u:"мл"},{t:"Свіжа м’ята",v:10,u:"г"}]},
+ {n:"Олд Фешн",m:"Стір (у рокс на велику брилу льоду)",g:"цедра апельсина, коктейльна вишня",tags:["Міцний","На віскі","Без вершків"],
+  ing:[{t:"Бурбон (Wild Turkey / Jack)",v:50,u:"мл"},{t:"Цукровий сироп",v:10,u:"мл"},{t:"Біттер Ангостура",v:2,u:"деш"}]},
+ {n:"Віскі Сауер",m:"Драй-шейк + шейк з льодом",g:"цедра лимона, крапля біттеру",tags:["Кислий","Солодкий","На віскі","Без вершків"],
+  ing:[{t:"Бурбон",v:50,u:"мл"},{t:"Свіжий лимонний сік",v:25,u:"мл"},{t:"Цукровий сироп",v:20,u:"мл"},{t:"Яєчний білок",v:15,u:"мл"}]},
+ {n:"Джин-Тонік",m:"Білд (хайбол з льодом)",g:"долька лайма або лимона",tags:["Легкий","Гіркуватий","На джині","Без вершків"],
+  ing:[{t:"Джин",v:50,u:"мл"},{t:"Тонік",v:150,u:"мл"}]},
+ {n:"Маргарита",m:"Шейк + стрейнер (келих коктейльний)",g:"солоний обідок, кружальце лайма",tags:["Кислий","Міцний","На текілі","Без вершків"],
+  ing:[{t:"Текіла Silver",v:50,u:"мл"},{t:"Лікер Тріпл Сек",v:25,u:"мл"},{t:"Свіжий сік лайма",v:25,u:"мл"}]},
+ {n:"Лонг-Айленд Айс Ті",m:"Білд / Шейк (великий хайбол)",g:"долька лимона",tags:["Міцний","Кислий","Солодкий","На ромі","На джині","На текілі","Без вершків"],
+  ing:[{t:"Горілка",v:15,u:"мл"},{t:"Джин",v:15,u:"мл"},{t:"Світлий ром",v:15,u:"мл"},{t:"Текіла",v:15,u:"мл"},{t:"Лікер Тріпл Сек",v:15,u:"мл"},{t:"Лимонний сік",v:25,u:"мл"},{t:"Цукровий сироп",v:15,u:"мл"},{t:"Кола",v:80,u:"мл"}]},
+ {n:"Б-52 (шот)",m:"Шар за шаром по барній ложці (стопка)",g:"подається з трубочкою",tags:["Міцний","Солодкий"],
+  ing:[{t:"Кавовий лікер Калуа",v:15,u:"мл"},{t:"Вершковий лікер Бейліз",v:15,u:"мл"},{t:"Лікер Тріпл Сек",v:15,u:"мл"}]},
+ {n:"Піна Колада",m:"Шейк з льодом (харікейн)",g:"долька ананаса, коктейльна вишня",tags:["Легкий","Солодкий","На ромі"],
+  ing:[{t:"Світлий ром",v:50,u:"мл"},{t:"Ананасовий сік",v:90,u:"мл"},{t:"Кокосове молоко / сироп",v:30,u:"мл"},{t:"Вершки 10%",v:20,u:"мл"}]}
+];
+
 const Q=[
 ["Правила офіціанта","Що важливо завжди мати гостю на столі?","їжу або напої, або згоду їх очікувати","лише меню","лише серветки і прибори","тільки воду"],
 ["Правила офіціанта","Коли починається обслуговування гостя?","коли гість переступив поріг закладу","коли гість сів за стіл","коли він зробив замовлення","коли підійшов офіціант"],
@@ -287,6 +313,13 @@ function pickField(labs){
 function gen(x){
  if(x.t)return{q:x.n,o:mk(x.a,x.w),e:`<b>${x.a}</b>`,tag:x.c};
  const labs=Object.keys(x.f),tag=x.c,e=`<b>${x.n}</b>${fs(x)}`;
+ /* РЕЖИМ СЛІПОЇ ДЕГУСТАЦІЇ ДЛЯ БАРУ */
+ if(S.mode=='b'){
+  const desc=x.f['Смак / ноти']||x.f['Склад']||Object.values(x.f)[0];
+  let pool=I.filter(y=>y!==x&&BARC.has(y.c)&&y.c==x.c).map(y=>y.n);
+  if(pool.length<3)pool=I.filter(y=>y!==x&&BARC.has(y.c)).map(y=>y.n);
+  return{q:`Вгадай позицію за описом:\n«${desc}»`,o:mk(x.n,pool),e,tag:'Сліпа дегустація · '+tag};
+ }
  const lb=pickField(labs);
  if(lb=='Склад'||lb=='Смак / ноти'){
   const own=L(x.f[lb]);
@@ -318,6 +351,49 @@ function fx(t){
 document.addEventListener('click',e=>{if(e.target.closest('button,select'))fx('tap')});
 function togSnd(){SND=!SND;try{localStorage.setItem('snd',SND?'1':'0')}catch(e){}if(SND)fx('ok');updOrn()}
 function updOrn(){const o=document.querySelector('.orn');if(o)o.innerHTML=`◄<i></i><span onclick="togSnd()" style="cursor:pointer;padding:2px 8px;border:1px solid var(--bd);border-radius:3px;font-size:13px">${SND?'⚙ 🔊':'⚙ 🔇'}</span><i></i>►`}
+
+/* --- БАР-ШЕЙКЕР: ТЕХКАРТНИК + МНОЖНИК ПОРЦІЙ + ПІДБІР ПІД СМАК ГОСТЯ --- */
+let MULT=1,BTAGS=[],BQ='';
+const ALL_BTAGS=['Кислий','Солодкий','Гіркуватий','Міцний','Легкий','Без вершків','На джині','На віскі','На ромі','На текілі','Ігристе'];
+function togBTag(t){
+ const i=BTAGS.indexOf(t);
+ if(i>=0)BTAGS.splice(i,1);else BTAGS.push(t);
+ barTool();
+}
+function barTool(){
+ const q=BQ.trim().toLowerCase();
+ const list=SPECS.filter(sp=>{
+  if(q&&!sp.n.toLowerCase().includes(q)&&!sp.ing.some(x=>x.t.toLowerCase().includes(q)))return false;
+  if(BTAGS.length&&!BTAGS.every(t=>sp.tags.includes(t)))return false;
+  return true;
+ });
+ app.innerHTML=`<button onclick="menu()" style="margin-top:0;margin-bottom:10px">← Назад до меню</button>
+ <div class="card">
+  <div class="mu">Порцій одночасно (перерахунок мл)</div>
+  <div class="row">${[1,2,3,4,5].map(m=>`<button class="${MULT===m?'on':''}" onclick="MULT=${m};barTool()">x${m}</button>`).join('')}</div>
+  <div class="mu" style="margin-top:12px">Підбір під запит гостя або пошук</div>
+  <input id="bq" type="search" value="${BQ}" placeholder="Напр.: джин, мохіто, віскі..." oninput="BQ=this.value;barTool()">
+  <div style="margin-top:6px">
+   ${ALL_BTAGS.map(t=>`<button class="chip ${BTAGS.includes(t)?'act':''}" onclick="togBTag('${t}')">${t}</button>`).join('')}
+   ${BTAGS.length?`<button class="chip no" onclick="BTAGS=[];barTool()">✕ Скинути фільтр</button>`:''}
+  </div>
+ </div>
+ <p class="mu">Знайдено техкарт: ${list.length} · Порцій: x${MULT}</p>
+ ${list.map(sp=>{
+  const info=I.find(x=>x.n===sp.n);
+  return `<div class="card">
+   <div class="tag">${sp.m}</div>
+   <div class="q" style="font-size:20px">${sp.n} ${STOP[sp.n]?'<span class="stop-badge">СТОП</span>':''}</div>
+   ${info&&info.f['Смак / ноти']?`<div style="margin-top:4px;font-style:italic;color:var(--mu)">«${info.f['Смак / ноти']}»</div>`:''}
+   <div style="margin-top:8px;padding:8px 10px;background:rgba(255,255,255,.3);border-radius:3px;border:1px dashed var(--bd)">
+    ${sp.ing.map(x=>`<div style="display:flex;justify-content:space-between;padding:2px 0"><span>${x.t}</span><span class="ml">${x.v*MULT} ${x.u}</span></div>`).join('')}
+   </div>
+   <div style="margin-top:6px"><span class="mu">Гарнір:</span> ${sp.g}</div>
+  </div>`;
+ }).join('')}`;
+ const inp=document.getElementById('bq');
+ if(inp&&BQ){inp.focus();inp.setSelectionRange(BQ.length,BQ.length)}
+}
 
 /* --- РОЗУМНИЙ БЛОКНОТ ЗМІНИ (КІПЕР) + СТОП-ЛИСТ + ЗВІТ --- */
 let ORD=[],STOP={},HIST=[];
@@ -475,10 +551,11 @@ function menu(){
  const stopCnt=Object.keys(STOP).filter(k=>STOP[k]).length;
  const b=(k,v,t)=>`<button class="${S[k]===v?'on':''}" onclick="S['${k}']=${typeof v=='number'?v:`'${v}'`};menu()">${t}</button>`;
  app.innerHTML=`<div class="card"><div class="mu">Категорія</div><select onchange="S.cat=this.value">${['Усі','🍺 Весь бар','🍽 Вся кухня',...cats].map(c=>`<option${c==S.cat?' selected':''}>${c}</option>`).join('')}</select></div>
- <div class="card"><div class="mu">Режим</div>${b('mode','a','Тест (без підказок за логікою)')}${b('mode','f','Картки: згадай сам')}</div>
+ <div class="card"><div class="mu">Режим</div>${b('mode','a','Тест (смаки, ноти, склад)')}${b('mode','b','🥃 Сліпа дегустація (Бар)')}${b('mode','f','Картки: згадай сам')}</div>
  <div class="card"><div class="mu">Питань</div><div class="row">${b('n',10,'10')}${b('n',15,'15')}${b('n',30,'30')}${b('n',999,'Усі')}</div></div>
  <button class="p" onclick="start()">Почати</button>
- <button onclick="keeper('ord')" style="text-align:center;margin-top:10px">📋 Блокнот зміни (Кіпер) ${ORD.length?`[${ORD.length}]`:''} ${stopCnt?`· 🚫${stopCnt}`:''}</button>
+ <button onclick="barTool()" style="text-align:center;margin-top:10px">🍹 Бар-Шейкер (техкарти + підбір)</button>
+ <button onclick="keeper('ord')" style="text-align:center;margin-top:8px">📋 Блокнот зміни (Кіпер) ${ORD.length?`[${ORD.length}]`:''} ${stopCnt?`· 🚫${stopCnt}`:''}</button>
  <button onclick="cheat()" style="text-align:center;margin-top:8px">📖 Шпаргалка зміни (пошук)</button>
  <p class="mu">Складні позиції (${weak}) зустрічаються частіше.</p>`}
 let CQ='',CC='Усі';
@@ -501,15 +578,16 @@ function renderCheat(){
  document.getElementById('clist').innerHTML=`<p class="mu">Знайдено позицій: ${list.length}</p>`+
   list.map(x=>`<div class="card"><div class="tag">${x.c}</div><div class="q" style="font-size:19px">${x.n} ${STOP[x.n]?'<span class="stop-badge">СТОП</span>':''}</div>${x.t?`<div style="margin-top:6px"><b>${x.a}</b></div>`:`<div style="margin-top:6px">${fs(x)}</div>`}</div>`).join('')}
 function start(){
- let p=ALL.filter(x=>S.cat=='Усі'||(GR[S.cat]?GR[S.cat](x):x.c==S.cat));
- p=p.map(x=>[Math.random()*(1+3*(W[key(x)]||0)),x]).sort((a,b)=>b[0]-a[0]).map(x=>x[1]).slice(0,S.n);
- R={q:p,i:0,s:0,bad:[]};ask()}
+ let pool=S.mode=='b'?I.filter(x=>BARC.has(x.c)&&(S.cat=='Усі'||S.cat=='🍺 Весь бар'||x.c==S.cat)):ALL.filter(x=>S.cat=='Усі'||(GR[S.cat]?GR[S.cat](x):x.c==S.cat));
+ if(!pool.length)pool=I.filter(x=>BARC.has(x.c));
+ pool=pool.map(x=>[Math.random()*(1+3*(W[key(x)]||0)),x]).sort((a,b)=>b[0]-a[0]).map(x=>x[1]).slice(0,S.n);
+ R={q:pool,i:0,s:0,bad:[]};ask()}
 const hd=t=>`<div class="bar"><i style="width:${R.i/R.q.length*100}%"></i></div><div class="mu">${R.i+1}/${R.q.length} · ${t} · ✓ ${R.s}</div>`;
 function ask(){
  const x=R.q[R.i];
  if(S.mode=='f'){app.innerHTML=hd(x.c)+`<div class="card"><div class="q">${x.n}</div><div class="mu">Згадай усе, потім натисни</div></div><div id="nx"><button class="p" onclick="rev()">Показати відповідь</button></div>`;return}
  const g=gen(x);R.g=g;
- app.innerHTML=hd(g.tag)+`<div class="card"><div class="q">${g.q}</div></div>${g.o.map((o,k)=>`<button id="o${k}" onclick="pick(${k})">${o.t}</button>`).join('')}<div id="nx"></div>`}
+ app.innerHTML=hd(g.tag)+`<div class="card"><div class="q" style="white-space:pre-line">${g.q}</div></div>${g.o.map((o,k)=>`<button id="o${k}" onclick="pick(${k})">${o.t}</button>`).join('')}<div id="nx"></div>`}
 function pick(k){
  const g=R.g,x=R.q[R.i],ok=g.o[k].ok;
  g.o.forEach((o,j)=>{const e=document.getElementById('o'+j);e.disabled=true;if(o.ok)e.classList.add('ok')});
