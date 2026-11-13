@@ -278,7 +278,26 @@ function gen(x){
  let ds=I.filter(y=>y!==x&&y.f[lb]&&y.c==x.c).map(y=>y.f[lb]);
  if(ds.filter(d=>d!=x.f[lb]).length<3)ds=I.filter(y=>y!==x&&y.f[lb]).map(y=>y.f[lb]);
  return{q:`«${x.n}» — ${lb.toLowerCase()}?`,o:mk(x.f[lb],ds),e,tag}}
+let SND=localStorage.getItem('snd')!=='0',AC=null;
+function fx(t){
+ if(t==='no'&&navigator.vibrate)try{navigator.vibrate([70,40,70])}catch(e){}
+ if(!SND)return;
+ try{
+  if(!AC)AC=new(window.AudioContext||window.webkitAudioContext)();
+  if(AC.state==='suspended')AC.resume();
+  const n=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();
+  o.connect(g);g.connect(AC.destination);
+  if(t==='ok'){o.type='triangle';o.frequency.setValueAtTime(523,n);o.frequency.setValueAtTime(659,n+.07);g.gain.setValueAtTime(.14,n);g.gain.exponentialRampToValueAtTime(.001,n+.26);o.start(n);o.stop(n+.26)}
+  else if(t==='no'){o.type='sawtooth';o.frequency.setValueAtTime(145,n);o.frequency.linearRampToValueAtTime(95,n+.22);g.gain.setValueAtTime(.14,n);g.gain.exponentialRampToValueAtTime(.001,n+.25);o.start(n);o.stop(n+.25)}
+  else if(t==='win'){o.type='triangle';[523,659,784,1046].forEach((f,i)=>o.frequency.setValueAtTime(f,n+i*.07));g.gain.setValueAtTime(.15,n);g.gain.exponentialRampToValueAtTime(.001,n+.36);o.start(n);o.stop(n+.36)}
+  else{o.type='sine';o.frequency.setValueAtTime(750,n);o.frequency.exponentialRampToValueAtTime(220,n+.025);g.gain.setValueAtTime(.09,n);g.gain.exponentialRampToValueAtTime(.001,n+.03);o.start(n);o.stop(n+.03)}
+ }catch(e){}
+}
+document.addEventListener('click',e=>{if(e.target.closest('button,select'))fx('tap')});
+function togSnd(){SND=!SND;try{localStorage.setItem('snd',SND?'1':'0')}catch(e){}if(SND)fx('ok');updOrn()}
+function updOrn(){const o=document.querySelector('.orn');if(o)o.innerHTML=`◄<i></i><span onclick="togSnd()" style="cursor:pointer;padding:2px 8px;border:1px solid var(--bd);border-radius:3px;font-size:13px">${SND?'⚙ 🔊':'⚙ 🔇'}</span><i></i>►`}
 function menu(){
+ updOrn();
  const weak=Object.keys(W).filter(k=>W[k]>0).length;
  const b=(k,v,t)=>`<button class="${S[k]===v?'on':''}" onclick="S['${k}']=${typeof v=='number'?v:`'${v}'`};menu()">${t}</button>`;
  app.innerHTML=`<div class="card"><div class="mu">Категорія</div><select onchange="S.cat=this.value">${['Усі','🍺 Весь бар','🍽 Вся кухня',...cats].map(c=>`<option${c==S.cat?' selected':''}>${c}</option>`).join('')}</select></div>
@@ -320,13 +339,13 @@ function pick(k){
  const g=R.g,x=R.q[R.i],ok=g.o[k].ok;
  g.o.forEach((o,j)=>{const e=document.getElementById('o'+j);e.disabled=true;if(o.ok)e.classList.add('ok')});
  if(!ok)document.getElementById('o'+k).classList.add('no');
+ fx(ok?'ok':'no');
  mark(x,ok);
  document.getElementById('nx').innerHTML=`<div class="card" style="margin-top:12px">${g.e}</div><button class="p" onclick="nxt()">${R.i+1<R.q.length?'Далі':'Результат'}</button>`}
 function rev(){const x=R.q[R.i];document.getElementById('nx').innerHTML=`<div class="card">${x.t?`<b>${x.a}</b>`:fs(x)}</div><div class="row"><button onclick="fk(0)">✗ Не знав</button><button onclick="fk(1)">✓ Знав</button></div>`}
-function fk(ok){mark(R.q[R.i],ok);nxt()}
+function fk(ok){fx(ok?'ok':'no');mark(R.q[R.i],ok);nxt()}
 function mark(x,ok){if(ok){R.s++;W[key(x)]=Math.max(0,(W[key(x)]||0)-1)}else{R.bad.push(x);W[key(x)]=(W[key(x)]||0)+1}sv()}
 function nxt(){R.i++;R.i<R.q.length?ask():end()}
-function end(){app.innerHTML=`<div class="card"><div class="q">${R.s} / ${R.q.length}</div></div>${R.bad.length?`<div class="card"><b>Повтори:</b>${R.bad.map(x=>`<p><b>${x.n}</b>${x.t?`<br><span class="mu">${x.a}</span>`:fs(x)}</p>`).join('')}</div>`:'<div class="card">Без помилок! 🎉</div>'}<button class="p" onclick="start()">Ще раз</button><button onclick="menu()">Налаштування</button>`}
+function end(){fx('win');app.innerHTML=`<div class="card"><div class="q">${R.s} / ${R.q.length}</div></div>${R.bad.length?`<div class="card"><b>Повтори:</b>${R.bad.map(x=>`<p><b>${x.n}</b>${x.t?`<br><span class="mu">${x.a}</span>`:fs(x)}</p>`).join('')}</div>`:'<div class="card">Без помилок! 🎉</div>'}<button class="p" onclick="start()">Ще раз</button><button onclick="menu()">Налаштування</button>`}
 menu();
 </script></body></html>
-
