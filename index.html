@@ -1,39 +1,172 @@
 <!DOCTYPE html>
-<html lang="uk"><head><meta charset="utf-8">
-<meta name="theme-color" content="#ece3cf"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="theme-color" content="#ece3cf">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Буха-Rest · Тест по меню</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;700&family=Old+Standard+TT:wght@400;700&family=Fira+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;700&family=Old+Standard+TT:wght@400;700&family=Fira+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#ece3cf;--fg:#262523;--mu:#6b6355;--bd:#262523;--ac:#8c4a2f;--ok:#4d7a45;--no:#a8352a;--pb:#262523;--pf:#ece3cf;box-sizing:border-box;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px);color-scheme:light}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1c1a;--fg:#ece3cf;--mu:#a39a88;--bd:#c9bfa8;--ac:#d98f5f;--ok:#7fb274;--no:#e0705f;--pb:#ece3cf;--pf:#1d1c1a;color-scheme:dark}.logo img{filter:invert(1);mix-blend-mode:screen}}
-:root[data-theme="dark"]{--bg:#1d1c1a;--fg:#ece3cf;--mu:#a39a88;--bd:#c9bfa8;--ac:#d98f5f;--ok:#7fb274;--no:#e0705f;--pb:#ece3cf;--pf:#1d1c1a;color-scheme:dark}
+:root{
+  --bg:#ece3cf;--paper:#e4d7be;--fg:#262523;--mu:#5c5346;--bd:#262523;
+  --ac:#8c4a2f;--brass:#9e7b47;--ok:#3d6b35;--no:#a8352a;--pb:#262523;--pf:#ece3cf;
+  box-sizing:border-box;
+  padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:inherit}
 html{background:var(--bg)}
-body{margin:0 auto;color:var(--fg);font:18px/1.45 'EB Garamond',Georgia,serif;padding:16px;max-width:560px;min-height:100vh;
-background:var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .3 0 0 0 0 .22 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
-:root[data-theme="dark"] .logo img{filter:invert(1);mix-blend-mode:screen}
-.logo{text-align:center;margin:0}
-.logo img{width:210px;max-width:70%;height:auto;mix-blend-mode:multiply}
-.nav{text-align:center;font:700 17px 'Old Standard TT',Georgia,serif;text-transform:uppercase;letter-spacing:1px;margin:4px 0 6px}
+body{
+  margin:0 auto;color:var(--fg);font:18px/1.45 'EB Garamond',Georgia,serif;
+  padding:12px 16px 32px;max-width:560px;min-height:100vh;
+  background:
+    radial-gradient(circle at 50% 0%, transparent 55%, rgba(38,37,35,.1) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .3 0 0 0 0 .22 0 0 0 .11 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"),
+    var(--bg);
+}
+.logo{text-align:center;margin:4px auto 2px;max-width:290px}
+.logo svg{width:100%;height:auto;display:block}
+.nav{
+  text-align:center;font:700 16px 'Old Standard TT',Georgia,serif;
+  text-transform:uppercase;letter-spacing:1.5px;margin:4px 0 4px
+}
 .nav span{color:var(--ac)}
-.orn{display:flex;align-items:center;gap:8px;margin:6px 0 16px;color:var(--fg);font-size:12px}
-.orn i{flex:1;border-top:3px double var(--fg)}
-.card{border:3px double var(--bd);border-radius:2px;padding:16px 20px;margin-bottom:12px;
-background:radial-gradient(circle at 8px 8px,var(--bd) 1.8px,transparent 2.4px),radial-gradient(circle at calc(100% - 8px) 8px,var(--bd) 1.8px,transparent 2.4px),radial-gradient(circle at 8px calc(100% - 8px),var(--bd) 1.8px,transparent 2.4px),radial-gradient(circle at calc(100% - 8px) calc(100% - 8px),var(--bd) 1.8px,transparent 2.4px)}
-button,select{font:500 16px/1.35 'Fira Sans',system-ui,sans-serif;color:var(--fg);background:transparent;border:2px solid var(--bd);border-radius:3px;padding:12px;width:100%;text-align:left;margin-top:8px}
+.orn{display:flex;align-items:center;gap:10px;margin:6px 0 16px;color:var(--bd);font-size:13px}
+.orn i{flex:1;height:3px;border-top:2px solid var(--bd);border-bottom:1px solid var(--bd)}
+.card{
+  position:relative;
+  border:2px solid var(--bd);
+  outline:1px solid var(--bd);
+  outline-offset:-5px;
+  border-radius:3px;
+  padding:18px 20px;
+  margin-bottom:14px;
+  background:linear-gradient(180deg, rgba(255,255,255,.22), rgba(0,0,0,.04)), var(--paper);
+  box-shadow:0 3px 0 rgba(38,37,35,.18);
+}
+.card::before,.card::after{
+  content:"• •";position:absolute;left:9px;right:9px;display:flex;justify-content:space-between;
+  font-size:12px;line-height:1;color:var(--bd);pointer-events:none
+}
+.card::before{top:6px}
+.card::after{bottom:6px}
+button,select{
+  font:500 16px/1.35 'Fira Sans',system-ui,sans-serif;color:var(--fg);
+  background:rgba(255,255,255,.35);border:2px solid var(--bd);border-radius:3px;
+  padding:12px 14px;width:100%;text-align:left;margin-top:8px;cursor:pointer;
+  -webkit-appearance:none;appearance:none;
+}
+select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23262523' d='M6 8.8L1.2 4l1.4-1.4L6 6l3.4-3.4L10.8 4z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;
+}
 select option{color:#262523;background:#ece3cf}
-button.p{background:var(--pb);color:var(--pf);text-align:center;border-color:var(--pb);font:700 16px 'Old Standard TT',Georgia,serif;letter-spacing:1px;text-transform:uppercase}
-button.on{border-color:var(--ac);outline:2px solid var(--ac);color:var(--ac)}
-button.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 20%,transparent)}
-button.no{border-color:var(--no);background:color-mix(in srgb,var(--no) 18%,transparent)}
-.mu{color:var(--mu);font:400 14px 'Fira Sans',system-ui,sans-serif}
+button.p{
+  background:var(--pb);color:var(--pf);text-align:center;border-color:var(--pb);
+  font:700 17px 'Old Standard TT',Georgia,serif;letter-spacing:1.5px;text-transform:uppercase;
+  box-shadow:0 3px 0 var(--brass);margin-top:12px;
+}
+button.on{
+  border-color:var(--ac);
+  background:rgba(140,74,47,.14);
+  color:var(--ac);font-weight:600;
+  box-shadow:inset 0 0 0 1px var(--ac);
+}
+button.ok{border-color:var(--ok);background:rgba(61,107,53,.22);font-weight:600}
+button.no{border-color:var(--no);background:rgba(168,53,42,.2)}
+.mu{color:var(--mu);font:500 13px 'Fira Sans',system-ui,sans-serif;text-transform:uppercase;letter-spacing:.6px}
 .card .mu span{color:var(--mu)}
-.q{font:700 21px/1.3 'Old Standard TT','EB Garamond',Georgia,serif}
-.q::first-letter{color:var(--ac);font-size:1.5em}
-.bar{height:0;border-top:3px double var(--fg);margin-bottom:12px;position:relative}.bar i{position:absolute;top:-2px;left:0;height:3px;background:var(--ac)}
+.q{font:700 21px/1.3 'Old Standard TT','EB Garamond',Georgia,serif;margin-top:4px}
+.q::first-letter{color:var(--ac);font-size:1.45em}
+.bar{height:7px;border:1.5px solid var(--bd);border-radius:3px;margin-bottom:10px;background:rgba(0,0,0,.08);overflow:hidden}
+.bar i{display:block;height:100%;background:repeating-linear-gradient(45deg,var(--ac),var(--ac) 6px,var(--brass) 6px,var(--brass) 12px)}
 .row{display:flex;gap:8px}.row button{text-align:center}
-</style></head><body>
-<div class="logo"><img src="data:image/jpeg;base64,__LOGO__" alt="Буха-Rest"></div><div class="nav"><span>Тест по меню</span> · Кухня · Бар</div><div class="orn">◄<i></i>◆<i></i>►</div><div id="app"></div>
+.foot{text-align:center;margin-top:12px;text-transform:none;letter-spacing:0;font-size:14px}
+</style>
+</head>
+<body>
+
+<div class="logo">
+  <!-- Вбудований векторний логотип Буха-Rest -->
+  <svg viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- Шестерні на фоні -->
+    <g stroke="#262523" stroke-width="3" fill="#e4d7be">
+      <circle cx="180" cy="110" r="68" stroke-dasharray="10 6"/>
+      <circle cx="180" cy="110" r="56"/>
+      <circle cx="115" cy="115" r="24" stroke-dasharray="6 4"/>
+      <circle cx="245" cy="115" r="24" stroke-dasharray="6 4"/>
+    </g>
+    <!-- Шампури зліва -->
+    <g stroke="#262523" stroke-width="2.5" stroke-linecap="round">
+      <line x1="55" y1="95" x2="115" y2="125"/>
+      <line x1="48" y1="107" x2="108" y2="137"/>
+      <line x1="42" y1="119" x2="102" y2="149"/>
+      <rect x="65" y="96" width="12" height="8" rx="2" transform="rotate(26 65 96)" fill="#262523"/>
+      <rect x="82" y="104" width="12" height="8" rx="2" transform="rotate(26 82 104)" fill="#262523"/>
+      <rect x="58" y="108" width="12" height="8" rx="2" transform="rotate(26 58 108)" fill="#262523"/>
+      <rect x="75" y="116" width="12" height="8" rx="2" transform="rotate(26 75 116)" fill="#262523"/>
+    </g>
+    <!-- Пляшка зліва -->
+    <g transform="translate(88,58) rotate(-32)">
+      <rect x="0" y="18" width="24" height="48" rx="4" fill="#ece3cf" stroke="#262523" stroke-width="3"/>
+      <rect x="7" y="0" width="10" height="19" fill="#ece3cf" stroke="#262523" stroke-width="3"/>
+      <path d="M3 40 L21 32 L21 62 L3 62 Z" fill="#262523"/>
+    </g>
+    <!-- Манометр та пляшка справа -->
+    <g stroke="#262523" stroke-width="3">
+      <line x1="235" y1="115" x2="255" y2="78"/>
+      <circle cx="262" cy="66" r="18" fill="#ece3cf"/>
+      <circle cx="262" cy="66" r="13" stroke-width="1.5"/>
+      <polyline points="262,58 262,66 268,69" stroke-width="2" stroke-linecap="round"/>
+    </g>
+    <g transform="translate(275,78) rotate(35)">
+      <rect x="0" y="18" width="24" height="48" rx="4" fill="#ece3cf" stroke="#262523" stroke-width="3"/>
+      <rect x="7" y="0" width="10" height="19" fill="#ece3cf" stroke="#262523" stroke-width="3"/>
+      <path d="M3 34 L21 42 L21 62 L3 62 Z" fill="#262523"/>
+    </g>
+    <!-- Водолазний шолом по центру -->
+    <g>
+      <!-- Купол шолома -->
+      <circle cx="180" cy="74" r="36" fill="#262523" stroke="#ece3cf" stroke-width="2"/>
+      <!-- Бокові вуха -->
+      <rect x="137" y="64" width="7" height="20" rx="3" fill="#262523" stroke="#ece3cf" stroke-width="1.5"/>
+      <rect x="216" y="64" width="7" height="20" rx="3" fill="#262523" stroke="#ece3cf" stroke-width="1.5"/>
+      <!-- Ілюмінатор -->
+      <circle cx="180" cy="74" r="22" fill="#ece3cf" stroke="#262523" stroke-width="2"/>
+      <circle cx="180" cy="74" r="17" fill="#ece3cf" stroke="#262523" stroke-width="2"/>
+      <path d="M170 67 A12 12 0 0 1 185 63" stroke="#262523" stroke-width="2" stroke-linecap="round"/>
+      <!-- Воротник / манішка -->
+      <path d="M138 118 C138 96, 222 96, 222 118 Z" fill="#262523" stroke="#ece3cf" stroke-width="2"/>
+      <!-- Трубки / щупальця -->
+      <path d="M168 96 C155 108, 128 112, 122 126" stroke="#ece3cf" stroke-width="8" stroke-linecap="round"/>
+      <path d="M168 96 C155 108, 128 112, 122 126" stroke="#262523" stroke-width="4" stroke-linecap="round"/>
+      <path d="M192 96 C205 108, 232 112, 238 126" stroke="#ece3cf" stroke-width="8" stroke-linecap="round"/>
+      <path d="M192 96 C205 108, 232 112, 238 126" stroke="#262523" stroke-width="4" stroke-linecap="round"/>
+    </g>
+    <!-- Нижня металева табличка з заклепками -->
+    <g>
+      <path d="M36 122 L125 130 L235 130 L324 122 L324 202 L235 196 L125 196 L36 202 Z" fill="#ece3cf" stroke="#262523" stroke-width="3.5" stroke-linejoin="round"/>
+      <!-- Кутики таблички -->
+      <path d="M36 122 L54 124 L54 140 L36 140 Z" fill="#e4d7be" stroke="#262523" stroke-width="2"/>
+      <path d="M324 122 L306 124 L306 140 L324 140 Z" fill="#e4d7be" stroke="#262523" stroke-width="2"/>
+      <path d="M36 202 L54 200 L54 184 L36 184 Z" fill="#e4d7be" stroke="#262523" stroke-width="2"/>
+      <path d="M324 202 L306 200 L306 184 L324 184 Z" fill="#e4d7be" stroke="#262523" stroke-width="2"/>
+      <!-- Заклепки -->
+      <circle cx="44" cy="131" r="2" fill="#262523"/>
+      <circle cx="316" cy="131" r="2" fill="#262523"/>
+      <circle cx="44" cy="193" r="2" fill="#262523"/>
+      <circle cx="316" cy="193" r="2" fill="#262523"/>
+      <!-- Напис БУХА-REST -->
+      <text x="180" y="178" text-anchor="middle" fill="#262523" font-family="'Old Standard TT', Georgia, serif" font-weight="700" font-size="38" letter-spacing="1.5">БУХА-REST</text>
+    </g>
+  </svg>
+</div>
+
+<div class="nav"><span>Тест по меню</span> · Кухня · Бар</div>
+<div class="orn">◄<i></i>⚙<i></i>►</div>
+<div id="app"></div>
+
 <script>
 // [кат, назва, склад, час, алергени, рекомендації]
 const K=[
@@ -93,179 +226,7 @@ const K=[
 ["Головні гарячі страви","М’ясна дошка від Зенона","ребра по-чеськи, половинка копченого курчати у власній коптильні, ребра печені BBQ, стейк курячий в соусі BBQ, ковбаски копчені під сиром, печена картопля по-селянськи; часниковий та медово-гірчичний соус, домашня квашенина, маринована цибуля (1200 г)","30-40 хв","","більш м’яса в порівнянні з Благобитом; дошка на компанію 3-4 людини"],
 ["Головні гарячі страви","Форель","ВАГОВА СТРАВА, ціла риба запечена, подається з картопляним пюре та долькою лимона (250-350 г)","25-30 хв","","уточнюємо що це вагова страва"],
 ["Головні гарячі страви","Сет ковбасок","3 види ковбаси: куряча, гостра свинна, курячо-свинна (та, що є в даний момент і входить в бачер і пивні ковбаски); хлібчик чорний (4 половинки), зубчики часнику, помідорки черрі, соуси часниковий і ббк, домашня квашенина","20-30 хв","",""]];
+
 // [кат, назва, градуси, смак / ноти, поєднання]
 const B=[
-["Пиво","Бухарест Фірмове","4,6%","світле нефільтроване, з цитрусовими нотами (з кислинкою)",""],
-["Пиво","Літовел Мораван","4,6%","світлий чеський лагер (фільтроване), м’який збалансований смак хмелю, приємний середній повний солодкий аромат",""],
-["Пиво","Літовел Преміум Светле","5,0%","світлий чеський лагер преміум класу, зварений традиційним способом, яскравий насичений смак, вишукана гіркота, хмільний післясмак",""],
-["Пиво","Літовел Дарк","4,8%","чеський темний лагер, приємний солодкаво-фруктовий аромат, карамельні нотки, мякий смак з солодовими тонами і приємним карамельним присмаком, легка гірчинка",""],
-["Пиво","ІПА Ягер","5,1%","IPA («індійський блідий ель»), сильно охмелений різновид пейл-елю з гірчинкою в післясмаку",""],
-["Пиво","Медове Ягер","4,2%","напівтемний лагер з додаванням натурального меду, з терпко-гіркуватим післясмаком",""],
-["Пиво","Сидр","5%","утворюється в результаті бродіння яблучного соку, насиченого киснем (в асортименті смак грейпфрут)",""],
-["Пиво","Оболонь безалкогольне / Карлсберг безалк (на вибір)","0%","виготовлене з відбірного ячмінного солоду, ароматного хмелю і води з юрського джерела; мембранна фільтрація видаляє алкоголь вже з готового пива",""],
-["Настоянки власного приготування","Бухарест на дубовій корі з корицею","45-50%","на основі дубової кори та паличок кориці",""],
-["Настоянки власного приготування","Кедрівка","40-43%","на основі кедрових горішків",""],
-["Настоянки власного приготування","Тернова","40%","на основі ягід терену",""],
-["Настоянки власного приготування","Мисливська","38-40%","на основі цедри апельсину, бадяну, кардамону та кориці",""],
-["Настоянки власного приготування","Яблучно-малинова","35-40%","на основі міксу яблук та малини",""],
-["Настоянки власного приготування","Лимонівка","35-38%","",""],
-["Настоянки власного приготування","Вишнівка","18-20%","",""],
-["Настоянки власного приготування","Полунична наливка","18-20%","",""],
-["Настоянки власного приготування","Журавлинова наливка","18-20%","легке, не міцне",""],
-["Настоянки власного приготування","Смородинова наливка","18-20%","легке, не міцне",""],
-["Вина Франції","French Life Grenache-Pinot Noir (червоне напівсухе)","11,5%","чудово інтенсивний з нотами червоних фруктів і спецій","сир, фрукти, десерти"],
-["Вина Франції","French Life Vermentino-Colombard (біле напівсухе)","11,5%","аромати тропічних фруктів та лимона з легкими мінеральними відтінками","сир, фрукти, десерти"],
-["Вина Франції","Michel Laurent Rose d’Anjou (рожеве напівсухе)","10,5%","помірно насичений, тони червоних стиглих ягід, гранат, квітковий характер, добре збалансоване","риба, морепродукти, фрукти, овочі"],
-["Вина Франції","Armand Dartois Cotes du Rhone (червоне сухе)","13,5%","насичене, з фруктовими ароматами, темно-червоний колір, багатий післясмак","м’ясо, птиця, сир"],
-["Вина України (Коблево)","Коблево Шардоне (біле сухе)","9,5-14%","гармонійний смак з тонами білих екзотичних плодів і зелених яблук","біле м’ясо птиці, риба під вершковим соусом, тушкований кролик"],
-["Вина України (Коблево)","Коблево Каберне (червоне сухе)","9,5-14%","неповторний сортовий смак з легкими пасльоновими тонами","шашлик, баранина, гострі м’ясні страви, грибна піца з томатним соусом, класичний яловичий стейк"],
-["Вина України (Коблево)","Коблево Мускат Південний (біле напівсолодке)","9-12%","освіжний смак з тривалим посмаком пелюсток чайної троянди","фруктові салати, нежирні сири"],
-["Вина України (Коблево)","Коблево Бастардо (червоне напівсолодке)","9,5-13%","оригінальний смак з тонами чорносливу та чорної смородини","сири, страви з червоного м’яса, карпаччо"],
-["Ігристі вина","Valmarone Lambrusco Bianco (біле напівсухе)","12%","мус живий швидкозникаючий, добрий перляж, аромат стиглих фруктів, смак м’який та гармонійний","сир, фрукти, десерти"],
-["Ігристі вина","Corner Prosecco Treviso (екстра драй біле)","11%","свіжий аромат з нотами жовтих і білих квітів та дині, смак сухий, свіжий, соковитий, збалансований","птиця, морепродукти, риба, фрукти"],
-["Ігристі вина","Visiega Cava Brut (брют біле)","11,5%","стійкий насичений мус, аромати стиглого яблука, ноти хлібної скоринки, тостів, бріош, делікатні ноти мигдалю","морепродукти, риба, птиця, овочі, сир"],
-["Ігристі вина","Marengo","10-13,5%","в асортименті: біле напівсолодке, рожеве напівсолодке, брют біле",""],
-["Ігристі вина","Fragolino","7%","солодке ігристе вино в асортименті: червоне або біле",""],
-["Вина Чилі","Los Pagos Sauvignon Blanc (біле сухе)","12,5%","виразний аромат з легкими нотками ананасу; приємне на смак, м’яке і хрустке","риба, морепродукти, птиця"],
-["Вина Чилі","Los Pagos Chardonnay (біле сухе)","12,5%","аромат з нотами білих квітів, зеленого ананасу, тропічних та сухих фруктів; смак округлий з нотами лимона та грейпфруту","риба, морепродукти, птиця"],
-["Вина Чилі","Los Pagos Cabernet Sauvignon (червоне сухе)","12,5%","аромати червоних фруктів з нотками ванілі, смак з танінами, насичений і щедрий смак чорної смородини, фіалки та сушених фруктів","м’ясо, сир"],
-["Вина Чилі","Los Pagos Carmenere (червоне сухе)","12,5%","ніжний та інтенсивний аромат свіжих червоних фруктів: малини та червоної смородини, розвинений букет, легко п’ється, у смаку фрукти, спеції","м’ясо, сир"],
-["Вина Італії","Ca Ernesto Pinot Grigio (біле сухе)","11,5%","тонкий сортовий аромат зі свіжих нот тропічних фруктів; смак сухий, свіжий і збалансований, ноти білих квітів","риба, морепродукти, сир"],
-["Вина Італії","Colline dei Fillari Soave Classico (біле сухе)","12%","м’яке, з ароматом фруктів, ніжний вишуканий аромат з нотками цитрусових, легка кислотність","риба, морепродукти, птиця, сир"],
-["Вина Італії","Colline dei Fillari Bardolino Classico (червоне сухе)","12%","повний структурований аромат з тонами шоколаду, прянощів, щільні таніни; смак — вибух чорних фруктів; подавати при +14°C…+16°C","м’ясо, птиця, сир"],
-["Вина Італії","Le Ginestre Chianti Riserva (червоне сухе)","13%","насичене, аромат квітів та фруктів з нотами чорносливу, прянощів та тваринними відтінками; потужно кислотне, фруктове, пряне та живе","м’ясо, птиця, сир"],
-["Вина Італії","Colline dei Fillari Rosato (рожеве сухе)","11,5%","тонкий аромат, легкі нотки спецій, дует дикої малини та квіткових пелюсток; багатий смак, щільність, легкість в післясмаку","птиця, морепродукти, сир"],
-["Вермут","Martini Bianco","15%","своєрідний, характерний смак зі збалансованою гіркотою і насолодою, трав’яні відтінки, приємний ванільний післясмак",""],
-["Вермут","Martini Rosso","15%","складний, збалансований, збудливий, приємно гіркий і трохи терпкий",""],
-["Ром","Captain Morgan White","37,5%","старіння близько двох років в дубових бочках; виразні ноти карамелі, ваніль, диня, банан, насичений присмак з відчуттям кокоса і перцю",""],
-["Ром","Captain Morgan Gold","35%","свіжі прянощі, сухофрукти, притрушені дрібною шоколадною стружкою; післясмак з ванільними і дубовими акцентами",""],
-["Ром","Captain Morgan Dark (Black Label)","40%","темний ямайський ром, бленд кращих сортів карибського рому, не менше 3 років в обвугених бочках з американського білого дуба; сильний, багатий, гладкий, ванільні ноти, відтінки патоки і дубової бочки",""],
-["Джин","Beefeater","40%","виразні ноти ялівцю, цедра лимона і апельсина, легкий коріандровий потоки",""],
-["Джин","Bombay Sapphire","47%","рецептура збереглася з 1761 року; лимонна цедра і мигдаль з Іспанії, коріандр з Марокко, ялівець з Тоскани, корінь дудника з Саксонії, ягоди кубеби з Індонезії; подвійна дистиляція, кожен раз не менше 8 годин, потім у Каттерхедських кубах",""],
-["Лікери, настоянки","Baileys","17%","густий, солодкий, танучий, вершковий, зігріваючий; молочно-кавова і вершково-шоколадна смакова палітра",""],
-["Лікери, настоянки","Sambuca","38%","яскравий анісовий аромат з цитрусовими нотами, злегка солодкуватий і пряний; п’ється чистою, з льодом або тоніком",""],
-["Лікери, настоянки","Becherovka","38%","приємна солодкість з гіркотою, трав’янисто-терпкий післясмак; спочатку замислювалась як лікарський засіб",""],
-["Лікери, настоянки","Jagermeister","35%","складний, виразний, різноманітний, трав’яний, терпкий, але водночас м’який; 56 інгредієнтів (трави, коріння, кора, фрукти, деревина), 12 місяців в дубових бочках",""],
-["Віскі","Jameson (ірландський)","40%","дуже м’який, тони горіха, ванілі і дерева, легка хересна солодкість; вважається наймякшим у світі; ячмінь і кукурудза, кожен зі злаків ферментується і тричі дистилюється окремо",""],
-["Віскі","Tullamore Dew (ірландський)","40%","приємні ноти солоду зіставляються з паленим деревом, тривалий ванільний смак",""],
-["Віскі","Jack Daniels (американський)","40%","ванільні палички з карамельною присипкою, деревні ноти, легкий димний післясмак; бродіння на кислому суслі, вода Теннессі",""],
-["Віскі","Wild Turkey (американський бурбон)","40,5%","м’який, злегка маслянистий бурбон; яскраві солодкуваті тони карамелі і ванілі, нюанси кленового сиропу і груші; післясмак тривалий з нотами кориці і дерева",""],
-["Віскі","Grant’s Family Reserve (шотландський)","40%","м’який, легкий, чудово збалансований, інтонації солоду, злегка солодкуватий через ванільні тони і бананові нотки; післясмак тривалий, гладкий",""],
-["Віскі","Grant’s Triple Wood Smoky (шотландський)","40%","початкова димність змінюється фруктовою солодкістю з цитрусовою домінантою; у сухому післясмаку проступають таніни і димний нюанс",""],
-["Віскі","Chivas Regal 12 YO","40%","вершковий, насичений смак з тонами спілих медових яблук, ванілі, горіхів та ірисок, багатий післясмак",""],
-["Віскі","Glenmorangie Original 10YO (шотландський односолод)","40%","злегка ванільний смак, філігранний цитрусовий присмак з нотками персика; невелика винокурня, регіон Хайленд, заснована в 1843 році",""],
-["Текіла","Jose Cuervo Especial Silver","38%","більш ніж на 70% з соку блакитного агави; подвійна дистиляція, пів року в американських дубових бочках; баланс солодкості та кислотності, деревні ноти, дим, чорний перець; м’який і чистий посмак",""],
-["Текіла","Jose Cuervo Especial Reposado","38%","солодка, витончена, з відтінком дуба та ванілі, нетривалий добре збалансований посмак",""],
-["Горілка","Козацька рада (звичайна)","","звичайна",""],
-["Горілка","Козацька рада Special","","старовинна технологія збагачення та пом’якшення пшеничним хлібом, ароматні спирти буркуну, фенхелю та липового кольору, легкий прянотрав’яний аромат; для любителів горілок з тонкими смаковими особливостями",""],
-["Горілка","Козацька рада Original","","кристально-прозорого кольору, класичний смак, відроджена старовинна технологія пом’якшення та збагачення пшеничним хлібом; м’якість горілчаного смаку та легкість пиття",""],
-["Горілка","Зубровка","","Грас, з травичкою, жовто-зелена",""],
-["Горілка","Нікіта","","на основі кукурудзяного спирту; виробник та всі гості, які куштували, кажуть, що голова після не болить",""],
-["Горілка","Фінляндія","","класична",""],
-["Коньяк, бренді","Коблево 5*","40%","насичений і м’який смак з відтінками сухофруктів, лісового горіха та ванілі",""],
-["Коньяк, бренді","Арарат 5*","40%","вірменський бренді з п’ятирічною витримкою; витончений, елегантний, зрілий, багатий, м’який, з виразними смородиновими тонами, делікатними солодкуватими інтонаціями; прекрасний в чистому вигляді в якості дигестиву; чудовий в поєднанні з кавою",""],
-["Коньяк, бренді","Метакса 5*","38%","дистилят з вина з купажу трьох автохтонних грецьких сортів винограду; бренді змішують з мускатними винами, екстрактами трав і квіткових пелюсток, ще на півроку в бочки; пляшки нагадують елементи грецької архітектури",""],
-["Коньяк, бренді","Легенда Вірменії","40%","складний, м’який, обволікальний, домінувальні тони шоколаду та ванілі; медові, фруктові та деревні відтінки",""],
-["Коньяк, бренді","Torres 10","38%","метод «солера» в американському дубі; потужний і багатий букет, особлива м’якість і ніжність; чудовий в чистому вигляді як дигестив; доповнення — страви з м’яса, сигара або кава",""],
-["Коньяк, бренді","Hennessy V.S.","40%","розкішна текстура, об’ємні ноти свіжих фруктів, легка ванільна присутність; ванільні та дубові акценти, ягідні ноти, горіхові і квіткові вставки; вперше з’явився на полицях більше 200 років тому, на ньому вперше нанесені «зірочки»",""]];
-// [тема, питання, правильно, помилкові…]
-const Q=[
-["Правила офіціанта","Що важливо завжди мати гостю на столі?","їжу або напої, або згоду їх очікувати","лише меню","лише серветки і прибори","тільки воду"],
-["Правила офіціанта","Коли починається обслуговування гостя?","коли гість переступив поріг закладу","коли гість сів за стіл","коли він зробив замовлення","коли підійшов офіціант"],
-["Правила офіціанта","Коли закінчується обслуговування?","коли гість вийшов із закладу","коли гість розрахувався","коли прибрали стіл","коли подали десерт"],
-["Правила офіціанта","Що треба знати про стоп-лист?","яких продуктів, страв і напоїв немає на кухні й у барі","які страви найдорожчі","хто з кухні у відпустці","які столи заброньовані"],
-["Правила офіціанта","Що найважче виправити в офіціанта?","некоректну поведінку з гостями","незнання меню","повільну роботу в програмі","незнання посуду"],
-["Правила офіціанта","Скільки може тривати вивчення всього меню?","від тижня до місяця","один день","два дні","рік"],
-["Правила офіціанта","Якщо гості не хочуть, щоб їх турбували, вони…","неодмінно скажуть про це","покличуть адміністратора","закриють меню","залишать чайові"],
-["Правила офіціанта","Як наглядати за гостями?","ненав’язливо тримати у полі зору","ходити слідом","стояти позаду гостей","підходити кожні 2 хвилини"],
-["Правила офіціанта","Як ставитись до розпоряджень адміністратора?","виконувати, бути командним гравцем, уникати конфліктів","обговорювати кожне","виконувати лише письмові","ігнорувати у години пік"],
-["Текіла","Premium-текіла (100% agave) робиться…","лише з блакитної агави","з агави мінімум на 51%","з кукурудзи","з цукрової тростини"],
-["Текіла","Мінімум цукрів з агави в текілі mixto","51%","60%","30%","100%"],
-["Текіла","Silver (plata, blanca) — витримка","не більше двох місяців","близько року","від 1 до 3 років","понад 3 роки"],
-["Текіла","Reposado — витримка","близько року","до двох місяців","від 1 до 3 років","понад 3 роки"],
-["Текіла","Añejo — витримка","від 1 до 3 років","близько року","до двох місяців","понад 5 років"],
-["Текіла","Extra añejo — витримка","понад 3 роки (з жовтня 2005)","1-3 роки","близько року","понад 10 років"],
-["Текіла","Gold (золота) — це…","срібна текіла, підфарбована для схожості з витриманою","витримана понад 3 роки","100% агава преміум","молода без кольору"],
-["Текіла","Як у Мексиці традиційно п’ють текілу?","без нічого, залпом","з сіллю і лаймом","з корицею і апельсином","з тоніком"],
-["Текіла","Схема поза Мексикою","лизнути сіль, випити, куснути лайм","куснути лайм, випити, лизнути сіль","лизнути корицю, випити, куснути апельсин","випити, лизнути сіль, куснути апельсин"],
-["Текіла","Схема в Німеччині","лизнути корицю, випити, куснути апельсин","лизнути сіль, випити, куснути лайм","лизнути цукор, випити, куснути лимон","випити, куснути апельсин, лизнути корицю"],
-["Горілка","Міцність горілки зазвичай","30-50%","20-30%","50-70%","40-60%"],
-["Горілка","Горілку п’ють","охолодженою, але не до крижаного стану","кімнатної температури","з льодом","підігрітою"],
-["Горілка","Безперечні закуски до горілки","солоні й мариновані грибочки, оселедець під цибулею, картопля, дичина, копченості","фрукти і десерти","морепродукти","сири з пліснявою"],
-["Джин","Головний компонент джину","ялівцева ягода","хміль","м’ята","аніс"],
-["Джин","Мінімальна міцність джину","37,5%","30%","40%","45%"],
-["Джин","London Dry Gin","сухий джин вищої якості, без цукру","джин з бочок з хересом","солодкий джин","джин з ягодами"],
-["Джин","Yellow Gin","янтарний, з бочок з хересом, трапляється дуже рідко","прозорий лондонський","солодкий для коктейлів","з ароматом лимона"],
-["Коньяк","Звідки походить коньяк?","регіон Пуату-Шаранта, Франція","Вірменія","Греція","Іспанія"],
-["Коньяк","Із якого винограду роблять коньяк?","з білих сортів","з червоних","з мускатних","з будь-яких"],
-["Коньяк","Скільки разів дистилюють молоде вино?","двічі","один раз","тричі","чотири рази"],
-["Коньяк","Де спочатку витримують коньячний спирт?","у нових дубових бочках","у старих дубових бочках","у металевих чанах","в акацієвих бочках"],
-["Ром","Рому якого типу відповідають ямайські сорти?","важкий","легкий","середній","ароматизований"],
-["Ром","Світлий ром — основа для…","мохіто","олд фешн","негроні","маргарити"],
-["Ром","Золотий ром також називають","бурштиновим","чорним","білим","кубинським"],
-["Ром","Overproof — міцність, як правило","60%","40%","50%","80%"],
-["Ром","Темний ром гарячим вживають у складі…","грогів","глінтвейну","пуншу з вином","тодді з віскі"],
-["Віскі","Як пишеться шотландський віскі?","whisky","whiskey","wisky","whiskei"],
-["Віскі","Ячмінь для димного аромату сушать над…","гарячим торфом","дубовою тріскою","вугіллям","яблуневими дровами"],
-["Віскі","Мінімальна витримка віскі в дубових бочках","три роки","один рік","п’ять років","десять років"]];
-const app=document.getElementById('app');
-let S={cat:'Усі',mode:'a',n:15},R,W={};
-try{W=JSON.parse(localStorage.getItem('w2')||'{}')}catch(e){}
-const sv=()=>{try{localStorage.setItem('w2',JSON.stringify(W))}catch(e){}};
-const sh=a=>[...a].sort(()=>Math.random()-.5),L=s=>s.split(/,\s*/);
-const I=[];
-K.forEach(r=>I.push({c:r[0],n:r[1],f:{'Склад':r[2],'Час':r[3],'Алергени':r[4],'Рекомендації':r[5]}}));
-B.forEach(r=>I.push({c:r[0],n:r[1],f:{'Градуси':r[2],'Смак / ноти':r[3],'Поєднання':r[4]}}));
-I.forEach(i=>{for(const k in i.f)if(!i.f[k])delete i.f[k]});
-const TH=Q.map(r=>({c:r[0],n:r[1],t:1,a:r[2],w:r.slice(3)}));
-const ALL=[...I,...TH],cats=[...new Set(ALL.map(x=>x.c))];
-const BARC=new Set([...B.map(r=>r[0]),'Текіла','Горілка','Джин','Коньяк','Ром','Віскі']),KC=new Set(K.map(r=>r[0]));
-const GR={'🍺 Весь бар':x=>BARC.has(x.c),'🍽 Вся кухня':x=>KC.has(x.c)};
-const fs=x=>Object.entries(x.f).map(([k,v])=>`<div><span class="mu">${k}:</span> ${v}</div>`).join('');
-const key=x=>x.n;
-function mk(c,ds){const o=[c];for(const d of sh(ds)){if(!o.includes(d))o.push(d);if(o.length>3)break}return sh(o).map(t=>({t,ok:t===c}))}
-function gen(x){
- if(x.t)return{q:x.n,o:mk(x.a,x.w),e:`<b>${x.a}</b>`,tag:x.c};
- const labs=Object.keys(x.f),tag=x.c,e=`<b>${x.n}</b>${fs(x)}`;
- const lb=labs[Math.random()*labs.length|0];
- if(lb=='Склад'||lb=='Смак / ноти'){
-  const own=L(x.f[lb]);
-  if(own.length>=3&&Math.random()<.7){
-   const low=own.map(s=>s.toLowerCase());
-   let pool=I.filter(y=>y!==x&&y.c==x.c&&y.f[lb]);if(pool.length<2)pool=I.filter(y=>y!==x&&y.f[lb]);
-   const fr=sh(pool.flatMap(y=>L(y.f[lb]))).filter(s=>s.length<60&&!low.some(o=>o.includes(s.toLowerCase())||s.toLowerCase().includes(o)));
-   if(fr.length){const w=fr[0];return{q:`Що НЕ входить у «${x.n}»?`,o:sh([...sh(own).slice(0,3).map(t=>({t,ok:false})),{t:w,ok:true}]),e,tag}}
-  }}
- let ds=I.filter(y=>y!==x&&y.f[lb]&&y.c==x.c).map(y=>y.f[lb]);
- if(ds.filter(d=>d!=x.f[lb]).length<3)ds=I.filter(y=>y!==x&&y.f[lb]).map(y=>y.f[lb]);
- return{q:`«${x.n}» — ${lb.toLowerCase()}?`,o:mk(x.f[lb],ds),e,tag}}
-function menu(){
- const weak=Object.keys(W).filter(k=>W[k]>0).length;
- const b=(k,v,t)=>`<button class="${S[k]===v?'on':''}" onclick="S['${k}']=${typeof v=='number'?v:`'${v}'`};menu()">${t}</button>`;
- app.innerHTML=`<div class="card"><div class="mu">Категорія</div><select onchange="S.cat=this.value">${['Усі','🍺 Весь бар','🍽 Вся кухня',...cats].map(c=>`<option${c==S.cat?' selected':''}>${c}</option>`).join('')}</select></div>
- <div class="card"><div class="mu">Режим</div>${b('mode','a','Тест (без підказок за логікою)')}${b('mode','f','Картки: згадай сам')}</div>
- <div class="card"><div class="mu">Питань</div><div class="row">${b('n',10,'10')}${b('n',15,'15')}${b('n',30,'30')}${b('n',999,'Усі')}</div></div>
- <button class="p" onclick="start()">Почати</button><p class="mu">Складні позиції (${weak}) зустрічаються частіше.</p>`}
-function start(){
- let p=ALL.filter(x=>S.cat=='Усі'||(GR[S.cat]?GR[S.cat](x):x.c==S.cat));
- p=p.map(x=>[Math.random()*(1+3*(W[key(x)]||0)),x]).sort((a,b)=>b[0]-a[0]).map(x=>x[1]).slice(0,S.n);
- R={q:p,i:0,s:0,bad:[]};ask()}
-const hd=t=>`<div class="bar"><i style="width:${R.i/R.q.length*100}%"></i></div><div class="mu">${R.i+1}/${R.q.length} · ${t} · ✓ ${R.s}</div>`;
-function ask(){
- const x=R.q[R.i];
- if(S.mode=='f'){app.innerHTML=hd(x.c)+`<div class="card"><div class="q">${x.n}</div><div class="mu">Згадай усе, потім натисни</div></div><div id="nx"><button class="p" onclick="rev()">Показати відповідь</button></div>`;return}
- const g=gen(x);R.g=g;
- app.innerHTML=hd(g.tag)+`<div class="card"><div class="q">${g.q}</div></div>${g.o.map((o,k)=>`<button id="o${k}" onclick="pick(${k})">${o.t}</button>`).join('')}<div id="nx"></div>`}
-function pick(k){
- const g=R.g,x=R.q[R.i],ok=g.o[k].ok;
- g.o.forEach((o,j)=>{const e=document.getElementById('o'+j);e.disabled=true;if(o.ok)e.classList.add('ok')});
- if(!ok)document.getElementById('o'+k).classList.add('no');
- mark(x,ok);
- document.getElementById('nx').innerHTML=`<div class="card" style="margin-top:12px">${g.e}</div><button class="p" onclick="nxt()">${R.i+1<R.q.length?'Далі':'Результат'}</button>`}
-function rev(){const x=R.q[R.i];document.getElementById('nx').innerHTML=`<div class="card">${x.t?`<b>${x.a}</b>`:fs(x)}</div><div class="row"><button onclick="fk(0)">✗ Не знав</button><button onclick="fk(1)">✓ Знав</button></div>`}
-function fk(ok){mark(R.q[R.i],ok);nxt()}
-function mark(x,ok){if(ok){R.s++;W[key(x)]=Math.max(0,(W[key(x)]||0)-1)}else{R.bad.push(x);W[key(x)]=(W[key(x)]||0)+1}sv()}
-function nxt(){R.i++;R.i<R.q.length?ask():end()}
-function end(){app.innerHTML=`<div class="card"><div class="q">${R.s} / ${R.q.length}</div></div>${R.bad.length?`<div class="card"><b>Повтори:</b>${R.bad.map(x=>`<p><b>${x.n}</b>${x.t?`<br><span class="mu">${x.a}</span>`:fs(x)}</p>`).join('')}</div>`:'<div class="card">Без помилок! 🎉</div>'}<button class="p" onclick="start()">Ще раз</button><button onclick="menu()">Налаштування</button>`}
-menu();
-</script></body></html>
+["Пиво","Бухарест
