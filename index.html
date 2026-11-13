@@ -25,7 +25,6 @@ body{
   -webkit-mask-image:radial-gradient(ellipse 52% 52% at 50% 50%, #000 62%, transparent 98%);
   mask-image:radial-gradient(ellipse 52% 52% at 50% 50%, #000 62%, transparent 98%);
 }
-
 .nav{
   text-align:center;font:700 16px 'Old Standard TT',Georgia,serif;
   text-transform:uppercase;letter-spacing:1.5px;margin:6px 0 4px
@@ -51,12 +50,15 @@ body{
 }
 .card::before{top:8px}
 .card::after{bottom:8px}
-button,select{
+button,select,input{
   font:500 16px/1.35 'Fira Sans',system-ui,sans-serif;color:var(--fg);
   background:rgba(255,255,255,.25);border:2px solid var(--bd);border-radius:3px;
   padding:12px 14px;width:100%;text-align:left;margin-top:8px;cursor:pointer;transition:.15s
 }
 select option{color:#262523;background:#efe6d5}
+input{box-sizing:border-box;outline:none;cursor:text}
+input:focus{border-color:var(--ac);background:rgba(255,255,255,.45)}
+.tag{display:inline-block;font:600 11px 'Fira Sans',sans-serif;text-transform:uppercase;letter-spacing:.5px;color:var(--ac);margin-bottom:4px}
 button.p{
   background:var(--pb);color:var(--pf);text-align:center;border-color:var(--pb);
   font:700 17px 'Old Standard TT',Georgia,serif;letter-spacing:1.5px;text-transform:uppercase;
@@ -258,51 +260,4 @@ const TH=Q.map(r=>({c:r[0],n:r[1],t:1,a:r[2],w:r.slice(3)}));
 const ALL=[...I,...TH],cats=[...new Set(ALL.map(x=>x.c))];
 const BARC=new Set([...B.map(r=>r[0]),'Текіла','Горілка','Джин','Коньяк','Ром','Віскі']),KC=new Set(K.map(r=>r[0]));
 const GR={'🍺 Весь бар':x=>BARC.has(x.c),'🍽 Вся кухня':x=>KC.has(x.c)};
-const fs=x=>Object.entries(x.f).map(([k,v])=>`<div><span class="mu">${k}:</span> ${v}</div>`).join('');
-const key=x=>x.n;
-function mk(c,ds){const o=[c];for(const d of sh(ds)){if(!o.includes(d))o.push(d);if(o.length>3)break}return sh(o).map(t=>({t,ok:t===c}))}
-function gen(x){
- if(x.t)return{q:x.n,o:mk(x.a,x.w),e:`<b>${x.a}</b>`,tag:x.c};
- const labs=Object.keys(x.f),tag=x.c,e=`<b>${x.n}</b>${fs(x)}`;
- const lb=labs[Math.random()*labs.length|0];
- if(lb=='Склад'||lb=='Смак / ноти'){
-  const own=L(x.f[lb]);
-  if(own.length>=3&&Math.random()<.7){
-   const low=own.map(s=>s.toLowerCase());
-   let pool=I.filter(y=>y!==x&&y.c==x.c&&y.f[lb]);if(pool.length<2)pool=I.filter(y=>y!==x&&y.f[lb]);
-   const fr=sh(pool.flatMap(y=>L(y.f[lb]))).filter(s=>s.length<60&&!low.some(o=>o.includes(s.toLowerCase())||s.toLowerCase().includes(o)));
-   if(fr.length){const w=fr[0];return{q:`Що НЕ входить у «${x.n}»?`,o:sh([...sh(own).slice(0,3).map(t=>({t,ok:false})),{t:w,ok:true}]),e,tag}}
-  }}
- let ds=I.filter(y=>y!==x&&y.f[lb]&&y.c==x.c).map(y=>y.f[lb]);
- if(ds.filter(d=>d!=x.f[lb]).length<3)ds=I.filter(y=>y!==x&&y.f[lb]).map(y=>y.f[lb]);
- return{q:`«${x.n}» — ${lb.toLowerCase()}?`,o:mk(x.f[lb],ds),e,tag}}
-function menu(){
- const weak=Object.keys(W).filter(k=>W[k]>0).length;
- const b=(k,v,t)=>`<button class="${S[k]===v?'on':''}" onclick="S['${k}']=${typeof v=='number'?v:`'${v}'`};menu()">${t}</button>`;
- app.innerHTML=`<div class="card"><div class="mu">Категорія</div><select onchange="S.cat=this.value">${['Усі','🍺 Весь бар','🍽 Вся кухня',...cats].map(c=>`<option${c==S.cat?' selected':''}>${c}</option>`).join('')}</select></div>
- <div class="card"><div class="mu">Режим</div>${b('mode','a','Тест (без підказок за логікою)')}${b('mode','f','Картки: згадай сам')}</div>
- <div class="card"><div class="mu">Питань</div><div class="row">${b('n',10,'10')}${b('n',15,'15')}${b('n',30,'30')}${b('n',999,'Усі')}</div></div>
- <button class="p" onclick="start()">Почати</button><p class="mu">Складні позиції (${weak}) зустрічаються частіше.</p>`}
-function start(){
- let p=ALL.filter(x=>S.cat=='Усі'||(GR[S.cat]?GR[S.cat](x):x.c==S.cat));
- p=p.map(x=>[Math.random()*(1+3*(W[key(x)]||0)),x]).sort((a,b)=>b[0]-a[0]).map(x=>x[1]).slice(0,S.n);
- R={q:p,i:0,s:0,bad:[]};ask()}
-const hd=t=>`<div class="bar"><i style="width:${R.i/R.q.length*100}%"></i></div><div class="mu">${R.i+1}/${R.q.length} · ${t} · ✓ ${R.s}</div>`;
-function ask(){
- const x=R.q[R.i];
- if(S.mode=='f'){app.innerHTML=hd(x.c)+`<div class="card"><div class="q">${x.n}</div><div class="mu">Згадай усе, потім натисни</div></div><div id="nx"><button class="p" onclick="rev()">Показати відповідь</button></div>`;return}
- const g=gen(x);R.g=g;
- app.innerHTML=hd(g.tag)+`<div class="card"><div class="q">${g.q}</div></div>${g.o.map((o,k)=>`<button id="o${k}" onclick="pick(${k})">${o.t}</button>`).join('')}<div id="nx"></div>`}
-function pick(k){
- const g=R.g,x=R.q[R.i],ok=g.o[k].ok;
- g.o.forEach((o,j)=>{const e=document.getElementById('o'+j);e.disabled=true;if(o.ok)e.classList.add('ok')});
- if(!ok)document.getElementById('o'+k).classList.add('no');
- mark(x,ok);
- document.getElementById('nx').innerHTML=`<div class="card" style="margin-top:12px">${g.e}</div><button class="p" onclick="nxt()">${R.i+1<R.q.length?'Далі':'Результат'}</button>`}
-function rev(){const x=R.q[R.i];document.getElementById('nx').innerHTML=`<div class="card">${x.t?`<b>${x.a}</b>`:fs(x)}</div><div class="row"><button onclick="fk(0)">✗ Не знав</button><button onclick="fk(1)">✓ Знав</button></div>`}
-function fk(ok){mark(R.q[R.i],ok);nxt()}
-function mark(x,ok){if(ok){R.s++;W[key(x)]=Math.max(0,(W[key(x)]||0)-1)}else{R.bad.push(x);W[key(x)]=(W[key(x)]||0)+1}sv()}
-function nxt(){R.i++;R.i<R.q.length?ask():end()}
-function end(){app.innerHTML=`<div class="card"><div class="q">${R.s} / ${R.q.length}</div></div>${R.bad.length?`<div class="card"><b>Повтори:</b>${R.bad.map(x=>`<p><b>${x.n}</b>${x.t?`<br><span class="mu">${x.a}</span>`:fs(x)}</p>`).join('')}</div>`:'<div class="card">Без помилок! 🎉</div>'}<button class="p" onclick="start()">Ще раз</button><button onclick="menu()">Налаштування</button>`}
-menu();
-</script></body></html>
+const fs=x=>
