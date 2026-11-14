@@ -8,14 +8,21 @@
 :root{
   --bg:#efe6d5;--paper:#e6dac3;--fg:#262523;--mu:#5e5649;--bd:#262523;
   --ac:#8c4a2f;--brass:#9e7b47;--ok:#4d7a45;--no:#a8352a;--pb:#262523;--pf:#efe6d5;
+  --inp:rgba(255,255,255,.3);--vign:rgba(84,65,40,.12);
   box-sizing:border-box;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px);color-scheme:light
 }
-html{background:var(--bg)}
+html.dark{
+  --bg:#1c1713;--paper:#261f1a;--fg:#efe5d5;--mu:#b3a592;--bd:#9e7b47;
+  --ac:#d9845b;--brass:#c49a5b;--ok:#6ba360;--no:#d95b4e;--pb:#9e7b47;--pf:#1c1713;
+  --inp:rgba(0,0,0,.28);--vign:rgba(0,0,0,.45);
+  color-scheme:dark
+}
+html{background:var(--bg);transition:background .25s}
 body{
   margin:0 auto;color:var(--fg);font:18px/1.45 'EB Garamond',Georgia,serif;padding:16px;max-width:560px;min-height:100vh;
-  background-color:var(--bg);
+  background-color:var(--bg);transition:color .25s,background-color .25s;
   background-image:
-    radial-gradient(circle at 50% 0%, transparent 55%, rgba(84,65,40,.12) 100%),
+    radial-gradient(circle at 50% 0%, transparent 55%, var(--vign) 100%),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .35 0 0 0 0 .22 0 0 0 .11 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 .logo{text-align:center;margin:0 auto 4px;width:230px;max-width:75%}
@@ -24,14 +31,17 @@ body{
   filter:grayscale(1) contrast(1.25) brightness(1.06);
   -webkit-mask-image:radial-gradient(ellipse 52% 52% at 50% 50%, #000 62%, transparent 98%);
   mask-image:radial-gradient(ellipse 52% 52% at 50% 50%, #000 62%, transparent 98%);
+  transition:filter .25s;
 }
+html.dark .logo img{filter:invert(1) grayscale(1) contrast(1.15) brightness(.95)}
 .nav{
   text-align:center;font:700 16px 'Old Standard TT',Georgia,serif;
   text-transform:uppercase;letter-spacing:1.5px;margin:6px 0 4px
 }
 .nav span{color:var(--ac)}
-.orn{display:flex;align-items:center;gap:10px;margin:6px 0 18px;color:var(--bd);font-size:14px}
+.orn{display:flex;align-items:center;gap:8px;margin:6px 0 18px;color:var(--bd);font-size:14px}
 .orn i{flex:1;height:3px;border-top:2px solid var(--bd);border-bottom:1px solid var(--bd)}
+.orn-btn{cursor:pointer;padding:2px 8px;border:1.5px solid var(--bd);border-radius:3px;font:600 12px 'Fira Sans',sans-serif;background:var(--inp);user-select:none}
 .card{
   position:relative;
   border:2px solid var(--bd);
@@ -40,8 +50,9 @@ body{
   border-radius:3px;
   padding:18px 20px;
   margin-bottom:14px;
-  background:linear-gradient(180deg, rgba(255,255,255,.15), rgba(0,0,0,.03)), var(--paper);
-  box-shadow:0 3px 0 rgba(38,37,35,.15);
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.04)), var(--paper);
+  box-shadow:0 3px 0 rgba(0,0,0,.18);
+  transition:background .25s,border-color .25s;
 }
 .card::before,.card::after{
   content:"";position:absolute;left:8px;right:8px;height:4px;pointer-events:none;
@@ -52,40 +63,74 @@ body{
 .card::after{bottom:8px}
 button,select,input{
   font:500 16px/1.35 'Fira Sans',system-ui,sans-serif;color:var(--fg);
-  background:rgba(255,255,255,.25);border:2px solid var(--bd);border-radius:3px;
+  background:var(--inp);border:2px solid var(--bd);border-radius:3px;
   padding:12px 14px;width:100%;text-align:left;margin-top:8px;cursor:pointer;transition:.15s
 }
-select option{color:#262523;background:#efe6d5}
+select option{color:var(--fg);background:var(--bg)}
 input{box-sizing:border-box;outline:none;cursor:text}
-input:focus{border-color:var(--ac);background:rgba(255,255,255,.45)}
+input:focus{border-color:var(--ac)}
 .tag{display:inline-block;font:600 11px 'Fira Sans',sans-serif;text-transform:uppercase;letter-spacing:.5px;color:var(--ac);margin-bottom:4px}
 button.p{
   background:var(--pb);color:var(--pf);text-align:center;border-color:var(--pb);
   font:700 17px 'Old Standard TT',Georgia,serif;letter-spacing:1.5px;text-transform:uppercase;
   box-shadow:0 3px 0 var(--brass)
 }
-button.on{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 12%,transparent);color:var(--ac);font-weight:600}
-button.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 22%,transparent)}
-button.no{border-color:var(--no);background:color-mix(in srgb,var(--no) 20%,transparent)}
-button.miss{border-color:var(--brass);border-style:dashed;background:color-mix(in srgb,var(--brass) 18%,transparent)}
+button.on{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 16%,transparent);color:var(--ac);font-weight:600}
+button.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 24%,transparent)}
+button.no{border-color:var(--no);background:color-mix(in srgb,var(--no) 22%,transparent)}
+button.miss{border-color:var(--brass);border-style:dashed;background:color-mix(in srgb,var(--brass) 20%,transparent)}
 .mu{color:var(--mu);font:400 13px 'Fira Sans',system-ui,sans-serif;text-transform:uppercase;letter-spacing:.5px}
 .q{font:700 21px/1.3 'Old Standard TT','EB Garamond',Georgia,serif;margin-top:4px}
 .q::first-letter{color:var(--ac);font-size:1.45em}
-.bar{height:6px;border:1.5px solid var(--bd);border-radius:3px;margin-bottom:12px;background:rgba(0,0,0,.06);overflow:hidden}
+.bar{height:6px;border:1.5px solid var(--bd);border-radius:3px;margin-bottom:12px;background:rgba(0,0,0,.08);overflow:hidden}
 .bar i{display:block;height:100%;background:repeating-linear-gradient(45deg,var(--ac),var(--ac) 6px,var(--brass) 6px,var(--brass) 12px);transition:width .25s linear}
 .row{display:flex;gap:8px}.row button{text-align:center}
 .chip{display:inline-block;width:auto;padding:4px 8px;margin:4px 4px 0 0;font:500 12px 'Fira Sans',sans-serif;border-width:1.5px}
-.chip.act{background:var(--ac);color:#efe6d5;border-color:var(--ac)}
-.warn{margin-top:6px;padding:6px 9px;border-left:3px solid var(--no);background:rgba(168,53,42,.1);font:500 13px/1.35 'Fira Sans',sans-serif;color:var(--no)}
+.chip.act{background:var(--ac);color:var(--bg);border-color:var(--ac)}
+.warn{margin-top:6px;padding:6px 9px;border-left:3px solid var(--no);background:color-mix(in srgb,var(--no) 12%,transparent);font:500 13px/1.35 'Fira Sans',sans-serif;color:var(--no)}
 .done-item{opacity:.55;text-decoration:line-through}
 .stop-badge{display:inline-block;background:var(--no);color:#efe6d5;font:600 11px 'Fira Sans',sans-serif;padding:2px 6px;border-radius:2px;margin-left:6px;vertical-align:middle}
 .ml{font:600 15px 'Fira Sans',sans-serif;color:var(--ac)}
 .ing-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
 .ing-grid button{margin-top:0;padding:10px;font-size:14px;text-align:center}
 .blitz-hud{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font:600 14px 'Fira Sans',sans-serif}
+
+/* 3D FLIP CARD */
+.flip-wrap{perspective:1000px;margin-bottom:14px;cursor:pointer}
+.flip-inner{position:relative;transition:transform .55s cubic-bezier(.22,.68,.36,1.15);transform-style:preserve-3d}
+.flip-wrap.flipped .flip-inner{transform:rotateY(180deg)}
+.flip-front,.flip-back{backface-visibility:hidden;-webkit-backface-visibility:hidden;margin-bottom:0}
+.flip-back{position:absolute;top:0;left:0;right:0;transform:rotateY(180deg)}
+.flip-wrap.flipped .flip-front{visibility:hidden}
+.flip-wrap.flipped .flip-back{position:relative}
+
+/* СУРГУЧЕВА ПЕЧАТКА */
+@keyframes stampIn{0%{transform:scale(2.4) rotate(-25deg);opacity:0}70%{transform:scale(.92) rotate(-8deg);opacity:1}100%{transform:scale(1) rotate(-11deg);opacity:1}}
+.seal{
+  width:118px;height:118px;margin:12px auto 4px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #b54534, #7d2419 72%, #52140d);
+  box-shadow:0 5px 12px rgba(0,0,0,.35), inset 0 2px 4px rgba(255,255,255,.25), inset 0 -4px 8px rgba(0,0,0,.45);
+  border:3px dashed rgba(239,230,213,.45);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  color:#f5ebd9;font-family:'Old Standard TT',Georgia,serif;
+  animation:stampIn .48s cubic-bezier(.2,.85,.35,1.15) forwards;
+  padding:8px;box-sizing:border-box;
+}
+.seal b{font-size:13px;letter-spacing:1px;text-transform:uppercase;line-height:1.15}
+.seal span{font:600 10px 'Fira Sans',sans-serif;letter-spacing:.8px;opacity:.85;margin-top:3px;text-transform:uppercase}
+
+/* СМАКОВА ШКАЛА ТА КРАПЛЯ НАПОЮ */
+.drink-bar{display:flex;align-items:center;gap:8px;margin-top:6px;padding:5px 8px;border-radius:3px;background:var(--inp);border:1px solid rgba(158,123,71,.35);font:500 12px 'Fira Sans',sans-serif}
+.drop{width:11px;height:11px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:inline-block;flex-shrink:0;box-shadow:inset -1px -1px 2px rgba(0,0,0,.3)}
+.abv-track{flex:1;height:5px;background:rgba(0,0,0,.15);border-radius:3px;overflow:hidden}
+.abv-fill{height:100%;background:linear-gradient(90deg,var(--brass),var(--ac))}
+
+/* ЗОЛОТІ ІСКРИ ПРИ 100% */
+@keyframes sparkUp{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-130px) scale(.3);opacity:0}}
+.spark{position:fixed;pointer-events:none;font-size:18px;z-index:99;animation:sparkUp 1.2s ease-out forwards}
 </style></head><body>
 <div class="logo"><img src="IMG_1665.jpeg" alt="Буха-Rest"></div>
-<div class="nav"><span>Тест по меню</span> · Кухня · Бар</div><div class="orn">◄<i></i>⚙<i></i>►</div><div id="app"></div>
+<div class="nav"><span>Тест по меню</span> · Кухня · Бар</div><div class="orn">◄<i></i><span id="ornCtrl"></span><i></i>►</div><div id="app"></div>
 <script>
 const K=[
 ["Холодні закуски","Помазанка з салом","3 кульки: мелене сало з паприкою, мелене сало зі зеленню і часником, цвіклі з вареного буряка і хрін; 8 чорних грінок на гриль","10-15 хв","","чудова закуска до горілки, настоянок"],
@@ -229,7 +274,6 @@ const B=[
 ["Коктейлі","Б-52 (шот)","28%","солодкий кавово-вершковий смак з яскравим апельсиновим фінішем","кавовий лікер Калуа, вершковий лікер Бейліз, апельсиновий лікер Тріпл Сек"],
 ["Коктейлі","Піна Колада","12%","ніжний тропічний, вершково-кокосовий смак із солодким ананасом","світлий ром, кокосове молоко або лікер, ананасовий сік, вершки"]];
 
-/* ТЕХКАРТИ ДЛЯ БАР-ШЕЙКЕРА ТА КОНСТРУКТОРА */
 const SPECS=[
  {n:"Апероль Шприц",m:"Білд (у винний келих з льодом)",g:"слайс апельсина",tags:["Легкий","Гіркуватий","Ігристе","Без вершків"],
   ing:[{t:"Апероль",v:60,u:"мл"},{t:"Просекко (ігристе)",v:90,u:"мл"},{t:"Содова",v:30,u:"мл"}]},
@@ -308,6 +352,46 @@ const GR={'🍺 Весь бар':x=>BARC.has(x.c),'🍽 Вся кухня':x=>KC
 const fs=x=>Object.entries(x.f).map(([k,v])=>`<div><span class="mu">${k}:</span> ${v}</div>`).join('');
 const key=x=>x.n;
 function stopTmr(){if(BTMR){clearInterval(BTMR);BTMR=null}}
+
+/* СМАКОВА ШКАЛА ТА КРАПЛЯ ДЛЯ НАПОЇВ */
+function drinkMeta(x){
+ if(!x||!x.f||!BARC.has(x.c))return '';
+ const abvStr=x.f['Градуси']||'';
+ const num=parseFloat(abvStr.replace(',','.'))||0;
+ const pct=Math.min(100,Math.round(num/50*100));
+ const txt=(x.n+' '+x.c+' '+(x.f['Смак / ноти']||'')).toLowerCase();
+ let col='#d49b35',lbl='Золотистий / пряний';
+ if(txt.includes('червон')||txt.includes('смородин')||txt.includes('вишн')||txt.includes('негроні')||txt.includes('шприц')){col='#b5382a';lbl='Рубіновий / ягідний'}
+ else if(txt.includes('біле')||txt.includes('ігрист')||txt.includes('цитрус')||txt.includes('лайм')||txt.includes('мохіто')||txt.includes('джин')){col='#8cb369';lbl='Свіжий / цитрусово-трав’яний'}
+ else if(txt.includes('темн')||txt.includes('коньяк')||txt.includes('віскі')||txt.includes('бурбон')||txt.includes('дарк')||txt.includes('олд фешн')){col='#8c4a2f';lbl='Бурштиновий / дубовий'}
+ else if(txt.includes('вершк')||txt.includes('бейліз')||txt.includes('колада')||txt.includes('б-52')){col='#e0cbb0';lbl='Вершково-десертний'}
+ else if(txt.includes('горілк')||txt.includes('silver')||txt.includes('біанко')){col='#9ec1cf';lbl='Кришталевий / чистий'}
+ return `<div class="drink-bar"><span class="drop" style="background:${col}"></span><span>${lbl}</span>${abvStr?`<div class="abv-track"><div class="abv-fill" style="width:${pct}%"></div></div><b style="color:var(--ac)">${abvStr}</b>`:''}</div>`;
+}
+
+/* СУРГУЧЕВА ПЕЧАТКА ТА ІСКРИ */
+function sealHtml(score,total){
+ const p=total?Math.round(score/total*100):0;
+ let rank='СТАЖЕР',sub='Потрібна практика';
+ if(p===100){rank='ЛЕГЕНДА ЗАЛУ';sub='Ідеально · 100%'}
+ else if(p>=80){rank='МАЙСТЕР ЗМІНИ';sub=`Високий клас · ${p}%`}
+ else if(p>=50){rank='ПРАКТИКАНТ';sub=`Непогано · ${p}%`}
+ return `<div class="seal"><b>${rank}</b><span>${sub}</span></div>`;
+}
+function burstSparks(){
+ for(let i=0;i<18;i++){
+  const s=document.createElement('div');
+  s.className='spark';
+  s.textContent=i%2?'✦':'★';
+  s.style.color=i%2?'var(--brass)':'var(--ac)';
+  s.style.left=(15+Math.random()*70)+'vw';
+  s.style.top=(45+Math.random()*35)+'vh';
+  s.style.animationDelay=(Math.random()*.35)+'s';
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),1600);
+ }
+}
+
 function mk(c,ds){const o=[c];for(const d of sh(ds)){if(!o.includes(d))o.push(d);if(o.length>3)break}return sh(o).map(t=>({t,ok:t===c}))}
 function pickField(labs){
  const main=labs.filter(k=>k=='Склад'||k=='Смак / ноти');
@@ -337,7 +421,8 @@ function gen(x){
  if(ds.filter(d=>d!=x.f[lb]).length<3)ds=I.filter(y=>y!==x&&y.f[lb]).map(y=>y.f[lb]);
  return{q:`«${x.n}» — ${lb.toLowerCase()}?`,o:mk(x.f[lb],ds),e,tag}}
 
-let SND=localStorage.getItem('snd')!=='0',AC=null;
+let SND=localStorage.getItem('snd')!=='0',DARK=localStorage.getItem('dark')==='1',AC=null;
+if(DARK)document.documentElement.classList.add('dark');
 function fx(t){
  if(t==='no'&&navigator.vibrate)try{navigator.vibrate([70,40,70])}catch(e){}
  if(!SND)return;
@@ -354,7 +439,16 @@ function fx(t){
 }
 document.addEventListener('click',e=>{if(e.target.closest('button,select'))fx('tap')});
 function togSnd(){SND=!SND;try{localStorage.setItem('snd',SND?'1':'0')}catch(e){}if(SND)fx('ok');updOrn()}
-function updOrn(){const o=document.querySelector('.orn');if(o)o.innerHTML=`◄<i></i><span onclick="togSnd()" style="cursor:pointer;padding:2px 8px;border:1px solid var(--bd);border-radius:3px;font-size:13px">${SND?'⚙ 🔊':'⚙ 🔇'}</span><i></i>►`}
+function togDark(){
+ DARK=!DARK;
+ document.documentElement.classList.toggle('dark',DARK);
+ try{localStorage.setItem('dark',DARK?'1':'0')}catch(e){}
+ fx('tap');updOrn();
+}
+function updOrn(){
+ const el=document.getElementById('ornCtrl');
+ if(el)el.innerHTML=`<span class="orn-btn" onclick="togSnd()">⚙ ${SND?'🔊':'🔇'}</span> <span class="orn-btn" onclick="togDark()">${DARK?'☀ День':'🌙 Бар'}</span>`;
+}
 
 /* --- КОНСТРУКТОР КОКТЕЙЛІВ «СКЛАДИ ПО ПАМ'ЯТІ» --- */
 const ALL_INGS=[...new Set(SPECS.flatMap(s=>s.ing.map(x=>x.t)))];
@@ -393,7 +487,12 @@ function nextMix(){
  if(MIX.i<MIX.list.length)prepMix();
  else{
   fx('win');
-  app.innerHTML=`<div class="card"><div class="mu">Конструктор завершено</div><div class="q">Ідеально зібрано: ${MIX.s} / ${MIX.list.length}</div></div>
+  if(MIX.s===MIX.list.length)burstSparks();
+  app.innerHTML=`<div class="card" style="text-align:center">
+   <div class="mu">Конструктор завершено</div>
+   ${sealHtml(MIX.s,MIX.list.length)}
+   <div class="q" style="margin-top:8px">Ідеально зібрано: ${MIX.s} / ${MIX.list.length}</div>
+  </div>
   <button class="p" onclick="startMix()">Зіграти ще раз</button><button onclick="menu()">Налаштування</button>`;
  }
 }
@@ -486,12 +585,13 @@ function pickBlitz(k){
 }
 function endBlitz(){
  fx('win');
- const isRec=BL.pts>BLITZ_BEST;
- if(isRec){BLITZ_BEST=BL.pts;try{localStorage.setItem('bbest',String(BLITZ_BEST))}catch(e){}}
- app.innerHTML=`<div class="card">
+ const isRec=BL.pts>BLITZ_BEST&&BL.pts>0;
+ if(isRec){BLITZ_BEST=BL.pts;try{localStorage.setItem('bbest',String(BLITZ_BEST))}catch(e){}burstSparks()}
+ app.innerHTML=`<div class="card" style="text-align:center">
   <div class="tag">Час вийшов!</div>
-  <div class="q" style="font-size:26px">Рахунок: ${BL.pts} балів ${isRec?'🏆 НОВИЙ РЕКОРД!':''}</div>
-  <div style="margin-top:8px">Точних відповідей: <b>${BL.ok} з ${BL.tot}</b></div>
+  ${sealHtml(BL.ok,Math.max(1,BL.tot))}
+  <div class="q" style="font-size:25px;margin-top:8px">${BL.pts} балів ${isRec?'🏆 НОВИЙ РЕКОРД!':''}</div>
+  <div style="margin-top:6px">Точних відповідей: <b>${BL.ok} з ${BL.tot}</b></div>
   <div class="mu" style="margin-top:4px">Рекорд зміни: ${BLITZ_BEST} балів</div>
  </div>
  <button class="p" onclick="startBlitz()">⚡ Ще 60 секунд</button>
@@ -531,8 +631,9 @@ function barTool(){
   return `<div class="card">
    <div class="tag">${sp.m}</div>
    <div class="q" style="font-size:20px">${sp.n} ${STOP[sp.n]?'<span class="stop-badge">СТОП</span>':''}</div>
-   ${info&&info.f['Смак / ноти']?`<div style="margin-top:4px;font-style:italic;color:var(--mu)">«${info.f['Смак / ноти']}»</div>`:''}
-   <div style="margin-top:8px;padding:8px 10px;background:rgba(255,255,255,.3);border-radius:3px;border:1px dashed var(--bd)">
+   ${drinkMeta(info)}
+   ${info&&info.f['Смак / ноти']?`<div style="margin-top:6px;font-style:italic;color:var(--mu)">«${info.f['Смак / ноти']}»</div>`:''}
+   <div style="margin-top:8px;padding:8px 10px;background:var(--inp);border-radius:3px;border:1px dashed var(--bd)">
     ${sp.ing.map(x=>`<div style="display:flex;justify-content:space-between;padding:2px 0"><span>${x.t}</span><span class="ml">${x.v*MULT} ${x.u}</span></div>`).join('')}
    </div>
    <div style="margin-top:6px"><span class="mu">Гарнір:</span> ${sp.g}</div>
@@ -684,7 +785,7 @@ function renderRep(){
  </div>
  <div class="card">
   <div class="mu">Історія винесених позицій</div>
-  ${HIST.slice(0,30).map(x=>`<div style="padding:6px 0;border-bottom:1px dashed rgba(38,37,35,.2);font-size:16px">
+  ${HIST.slice(0,30).map(x=>`<div style="padding:6px 0;border-bottom:1px dashed rgba(158,123,71,.35);font-size:16px">
    <span class="mu">${x.tm}</span> · <b>${x.n}</b> <span class="mu">(${x.crs})</span>
    ${x.tags&&x.tags.length?`<div style="font:500 12px 'Fira Sans',sans-serif;color:var(--ac)">${x.tags.join(', ')}</div>`:''}
   </div>`).join('')}
@@ -705,7 +806,7 @@ function menu(){
   ${b('mode','b','🥃 Сліпа дегустація (Бар)')}
   ${b('mode','m','🧪 Склади коктейль по пам’яті')}
   ${b('mode','z',`⚡ Бліц 60 сек ${BLITZ_BEST?`(рекорд: ${BLITZ_BEST})`:''}`)}
-  ${b('mode','f','Картки: згадай сам')}
+  ${b('mode','f','Картки: згадай сам (3D)')}
  </div>
  ${S.mode=='a'||S.mode=='b'||S.mode=='f'?`<div class="card"><div class="mu">Питань</div><div class="row">${b('n',10,'10')}${b('n',15,'15')}${b('n',30,'30')}${b('n',999,'Усі')}</div></div>`:''}
  <button class="p" onclick="start()">Почати</button>
@@ -732,7 +833,7 @@ function renderCheat(){
   return txt.includes(q);
  });
  document.getElementById('clist').innerHTML=`<p class="mu">Знайдено позицій: ${list.length}</p>`+
-  list.map(x=>`<div class="card"><div class="tag">${x.c}</div><div class="q" style="font-size:19px">${x.n} ${STOP[x.n]?'<span class="stop-badge">СТОП</span>':''}</div>${x.t?`<div style="margin-top:6px"><b>${x.a}</b></div>`:`<div style="margin-top:6px">${fs(x)}</div>`}</div>`).join('')}
+  list.map(x=>`<div class="card"><div class="tag">${x.c}</div><div class="q" style="font-size:19px">${x.n} ${STOP[x.n]?'<span class="stop-badge">СТОП</span>':''}</div>${drinkMeta(x)}${x.t?`<div style="margin-top:6px"><b>${x.a}</b></div>`:`<div style="margin-top:6px">${fs(x)}</div>`}</div>`).join('')}
 function start(){
  if(S.mode=='m'){startMix();return}
  if(S.mode=='z'){startBlitz();return}
@@ -743,9 +844,35 @@ function start(){
 const hd=t=>`<div class="bar"><i style="width:${R.i/R.q.length*100}%"></i></div><div class="mu">${R.i+1}/${R.q.length} · ${t} · ✓ ${R.s}</div>`;
 function ask(){
  const x=R.q[R.i];
- if(S.mode=='f'){app.innerHTML=hd(x.c)+`<div class="card"><div class="q">${x.n}</div><div class="mu">Згадай усе, потім натисни</div></div><div id="nx"><button class="p" onclick="rev()">Показати відповідь</button></div>`;return}
+ if(S.mode=='f'){
+  app.innerHTML=hd(x.c)+`
+  <div id="fcard" class="flip-wrap" onclick="flipCard()">
+   <div class="flip-inner">
+    <div class="card flip-front">
+     <div class="tag">${x.c}</div>
+     <div class="q">${x.n}</div>
+     <div class="mu" style="margin-top:10px">↻ Натисни на картку, щоб перевернути</div>
+    </div>
+    <div class="card flip-back">
+     <div class="tag">${x.c}</div>
+     <div class="q" style="font-size:19px">${x.n}</div>
+     ${drinkMeta(x)}
+     <div style="margin-top:6px">${x.t?`<b>${x.a}</b>`:fs(x)}</div>
+    </div>
+   </div>
+  </div>
+  <div id="nx"><button class="p" onclick="flipCard()">↻ Перевернути картку</button></div>`;
+  return;
+ }
  const g=gen(x);R.g=g;
  app.innerHTML=hd(g.tag)+`<div class="card"><div class="q" style="white-space:pre-line">${g.q}</div></div>${g.o.map((o,k)=>`<button id="o${k}" onclick="pick(${k})">${o.t}</button>`).join('')}<div id="nx"></div>`}
+function flipCard(){
+ const fc=document.getElementById('fcard');
+ if(!fc||fc.classList.contains('flipped'))return;
+ fc.classList.add('flipped');
+ fx('tap');
+ document.getElementById('nx').innerHTML=`<div class="row"><button class="no" onclick="fk(0)">✗ Не знав</button><button class="ok" onclick="fk(1)">✓ Знав</button></div>`;
+}
 function pick(k){
  const g=R.g,x=R.q[R.i],ok=g.o[k].ok;
  g.o.forEach((o,j)=>{const e=document.getElementById('o'+j);e.disabled=true;if(o.ok)e.classList.add('ok')});
@@ -753,10 +880,16 @@ function pick(k){
  fx(ok?'ok':'no');
  mark(x,ok);
  document.getElementById('nx').innerHTML=`<div class="card" style="margin-top:12px">${g.e}</div><button class="p" onclick="nxt()">${R.i+1<R.q.length?'Далі':'Результат'}</button>`}
-function rev(){const x=R.q[R.i];document.getElementById('nx').innerHTML=`<div class="card">${x.t?`<b>${x.a}</b>`:fs(x)}</div><div class="row"><button onclick="fk(0)">✗ Не знав</button><button onclick="fk(1)">✓ Знав</button></div>`}
 function fk(ok){fx(ok?'ok':'no');mark(R.q[R.i],ok);nxt()}
 function mark(x,ok){if(ok){R.s++;W[key(x)]=Math.max(0,(W[key(x)]||0)-1)}else{R.bad.push(x);W[key(x)]=(W[key(x)]||0)+1}sv()}
 function nxt(){R.i++;R.i<R.q.length?ask():end()}
-function end(){fx('win');app.innerHTML=`<div class="card"><div class="q">${R.s} / ${R.q.length}</div></div>${R.bad.length?`<div class="card"><b>Повтори:</b>${R.bad.map(x=>`<p><b>${x.n}</b>${x.t?`<br><span class="mu">${x.a}</span>`:fs(x)}</p>`).join('')}</div>`:'<div class="card">Без помилок! 🎉</div>'}<button class="p" onclick="start()">Ще раз</button><button onclick="menu()">Налаштування</button>`}
+function end(){
+ fx('win');
+ if(R.s===R.q.length&&R.q.length>0)burstSparks();
+ app.innerHTML=`<div class="card" style="text-align:center">
+  <div class="mu">Результат тесту</div>
+  ${sealHtml(R.s,R.q.length)}
+  <div class="q" style="margin-top:8px">${R.s} / ${R.q.length}</div>
+ </div>${R.bad.length?`<div class="card"><b>Повтори:</b>${R.bad.map(x=>`<p><b>${x.n}</b>${x.t?`<br><span class="mu">${x.a}</span>`:fs(x)}</p>`).join('')}</div>`:'<div class="card" style="text-align:center">Без жодної помилки! 🎉</div>'}<button class="p" onclick="start()">Ще раз</button><button onclick="menu()">Налаштування</button>`}
 menu();
 </script></body></html>
