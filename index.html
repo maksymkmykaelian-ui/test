@@ -125,6 +125,12 @@ button.miss{border-color:var(--brass);border-style:dashed;background:color-mix(i
 .abv-track{flex:1;height:5px;background:rgba(0,0,0,.15);border-radius:3px;overflow:hidden}
 .abv-fill{height:100%;background:linear-gradient(90deg,var(--brass),var(--ac))}
 
+/* ТАБЛИЦЯ ЛІДЕРІВ */
+.lb-row{display:flex;align-items:center;justify-content:space-between;padding:9px 4px;border-bottom:1px dashed rgba(158,123,71,.38);gap:8px}
+.lb-row:last-child{border-bottom:none}
+.lb-me{background:color-mix(in srgb,var(--ac) 13%,transparent);border-radius:3px;padding:9px 8px}
+.role-badge{font:600 11px 'Fira Sans',sans-serif;padding:2px 6px;border-radius:2px;border:1px solid var(--bd);color:var(--mu);margin-left:5px}
+
 /* ЗОЛОТІ ІСКРИ ПРИ 100% */
 @keyframes sparkUp{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-130px) scale(.3);opacity:0}}
 .spark{position:fixed;pointer-events:none;font-size:18px;z-index:99;animation:sparkUp 1.2s ease-out forwards}
@@ -132,6 +138,8 @@ button.miss{border-color:var(--brass);border-style:dashed;background:color-mix(i
 <div class="logo"><img src="IMG_1665.jpeg" alt="Буха-Rest"></div>
 <div class="nav"><span>Тест по меню</span> · Кухня · Бар</div><div class="orn">◄<i></i><span id="ornCtrl"></span><i></i>►</div><div id="app"></div>
 <script>
+const DB_URL="https://buha-rest-default-rtdb.europe-west1.firebasedatabase.app";
+
 const K=[
 ["Холодні закуски","Помазанка з салом","3 кульки: мелене сало з паприкою, мелене сало зі зеленню і часником, цвіклі з вареного буряка і хрін; 8 чорних грінок на гриль","10-15 хв","","чудова закуска до горілки, настоянок"],
 ["Холодні закуски","Тартар з баклажанів","дрібно нарізаний печений баклажан, фета, часник, синя цибуля (паштеподібна маса); хліб власного приготування на заквасці (4-7 шт, 150 г)","10-15 хв","","не м’ясна страва"],
@@ -150,7 +158,7 @@ const K=[
 ["Холодні закуски","Грінки","грінки гриль або грінки на фритюрі (як до біфштексу); якщо просять просто «грінки» — це ГРІНКИ ГРИЛЬ","10 хв","","вибиваємо по штучно"],
 ["Супи","Грибна крем-зупа","крем-суп із шампіньйонів з цибулею та вершками, сушені білі гриби; 2 грінки на заквасці, грибочок по центру","10-20 хв","","пропонуємо хліб"],
 ["Супи","Бульйон курячий","куряче філе су-від, половинка перепелиного яйця, локшина, зверху зелень","10-20 хв","","пропонуємо хліб; може бути без зелені"],
-["Супи","Бограч","гострий наваристий суп: свинина, морква, цибуля, корінь петрушки, картопля, корінь селери, домашнє тісто, перець чилі, томатний сік; подається зі сметаною, свіжою синьою цибулею та салом на половинці чорного хліба","10-20 хв","","гострий; пропонуємо додатковий хліб (там лише 1 половинка)"],
+["Супи","Бограч","гострий наваристий суп: свинина, морква, цибуля, корінь петрушки, картопля, корінь селери, домашнє тісто, перець чилі, томатний сік; подається зі сметаною, свіжою синьою цибулею та салом на половинці чорного хлібчика","10-20 хв","","гострий; пропонуємо додатковий хліб (там лише 1 половинка)"],
 ["Гарячі закуски","Сирні кульки з соусом тар-тар","тертий сир гауда, формується в кульки (10 шт), соус тартар","15-20 хв","","чудово підходить до пива"],
 ["Гарячі закуски","Пивна дошка","креветки в паніровці, шампіньйони фрі, нагетси, картопля фрі, цибулеві кільця, чіпси начос; соуси світ чилі і часниковий","15-20 хв","","чудово підходить до пива, для компанії"],
 ["Гарячі закуски","Ковбаски «пивні» з сиром","власні копчені ковбаски, карамелізована цибуля, тушкована в яблучному оцті, медово-гірчичний соус; подаються в сирному соусі; ковбаски порізані на шматочки (5-7 шт)","15-25 хв","мед","чудово підходить до пива"],
@@ -338,8 +346,10 @@ const Q=[
 ["Віскі","Мінімальна витримка віскі в дубових бочках","три роки","один рік","п’ять років","десять років"]];
 const app=document.getElementById('app');
 let S={cat:'Усі',mode:'a',n:15},R,W={},BLITZ_BEST=+(localStorage.getItem('bbest')||0),BTMR=null;
+let USER={name:localStorage.getItem('uname')||'',role:localStorage.getItem('urole')||'Зал'};
 try{W=JSON.parse(localStorage.getItem('w2')||'{}')}catch(e){}
 const sv=()=>{try{localStorage.setItem('w2',JSON.stringify(W))}catch(e){}};
+const svUser=()=>{try{localStorage.setItem('uname',USER.name);localStorage.setItem('urole',USER.role)}catch(e){}};
 const sh=a=>[...a].sort(()=>Math.random()-.5),L=s=>s.split(/,\s*/);
 const I=[];
 K.forEach(r=>I.push({c:r[0],n:r[1],f:{'Склад':r[2],'Час':r[3],'Алергени':r[4],'Рекомендації':r[5]}}));
@@ -352,6 +362,69 @@ const GR={'🍺 Весь бар':x=>BARC.has(x.c),'🍽 Вся кухня':x=>KC
 const fs=x=>Object.entries(x.f).map(([k,v])=>`<div><span class="mu">${k}:</span> ${v}</div>`).join('');
 const key=x=>x.n;
 function stopTmr(){if(BTMR){clearInterval(BTMR);BTMR=null}}
+
+/* --- СИНХРОНІЗАЦІЯ ОНЛАЙН-РЕЙТИНГУ (FIREBASE) --- */
+function userKey(){
+ const clean=(USER.name||'Анонім').trim().toLowerCase().replace(/[.#$\[\]\/]/g,'_');
+ return encodeURIComponent(clean+'__'+(USER.role||'Зал'));
+}
+async function pushCloudScore(type,val,extra){
+ const nm=(USER.name||'').trim();
+ if(!nm)return;
+ try{
+  const k=userKey();
+  const url=`${DB_URL}/leaders/${type}/${k}.json`;
+  const r=await fetch(url);
+  const old=await r.json();
+  if(old&&typeof old.val==='number'&&old.val>=val)return;
+  await fetch(url,{
+   method:'PUT',
+   headers:{'Content-Type':'application/json'},
+   body:JSON.stringify({name:nm,role:USER.role||'Зал',val,extra:extra||'',dt:new Date().toLocaleDateString('uk-UA')})
+  });
+ }catch(e){}
+}
+
+let LBTAB='blitz';
+async function leaderboard(tab){
+ stopTmr();
+ if(tab)LBTAB=tab;
+ app.innerHTML=`<button onclick="menu()" style="margin-top:0;margin-bottom:10px">← Назад до меню</button>
+ <div class="row" style="margin-bottom:12px">
+  <button class="${LBTAB==='blitz'?'on':''}" onclick="leaderboard('blitz')">⚡ Топ Бліцу</button>
+  <button class="${LBTAB==='quiz'?'on':''}" onclick="leaderboard('quiz')">🎓 Топ Тестів</button>
+ </div>
+ <div class="card" id="lbBox"><div class="mu">Завантаження рейтингу з бази...</div></div>`;
+ try{
+  const res=await fetch(`${DB_URL}/leaders/${LBTAB}.json`);
+  const data=await res.json();
+  const box=document.getElementById('lbBox');
+  if(!box)return;
+  const rows=data?Object.values(data).sort((a,b)=>b.val-a.val).slice(0,20):[];
+  if(!rows.length){
+   box.innerHTML=`<div class="mu">Поки що порожньо</div><div style="margin-top:6px">Вкажи своє ім’я на головному екрані та пройди ${LBTAB==='blitz'?'Бліц 60 сек':'Тест'} — ти станеш першим у таблиці!</div>`;
+   return;
+  }
+  const med=['🥇','🥈','🥉'];
+  const myNm=(USER.name||'').trim().toLowerCase();
+  box.innerHTML=`<div class="mu" style="margin-bottom:8px">${LBTAB==='blitz'?'Рекорди швидкості (60 сек)':'Найкращі результати тестів'}</div>`+
+   rows.map((r,idx)=>{
+    const isMe=myNm&&r.name.toLowerCase()===myNm;
+    return `<div class="lb-row ${isMe?'lb-me':''}">
+     <div>
+      <b>${med[idx]||`#${idx+1}`} ${r.name}</b><span class="role-badge">${r.role==='Бар'?'🍺 Бар':'🍽 Зал'}</span>
+      <div class="mu" style="font-size:11px;margin-top:2px">${r.extra?r.extra+' · ':''}${r.dt||''}</div>
+     </div>
+     <div style="text-align:right">
+      <b style="color:var(--ac);font-size:19px">${LBTAB==='blitz'?`${r.val} б.`:`${r.val}%`}</b>
+     </div>
+    </div>`;
+   }).join('');
+ }catch(e){
+  const box=document.getElementById('lbBox');
+  if(box)box.innerHTML=`<div class="warn">Не вдалося підключитися до бази. Перевір інтернет.</div>`;
+ }
+}
 
 /* СМАКОВА ШКАЛА ТА КРАПЛЯ ДЛЯ НАПОЇВ */
 function drinkMeta(x){
@@ -487,13 +560,17 @@ function nextMix(){
  if(MIX.i<MIX.list.length)prepMix();
  else{
   fx('win');
+  const pct=Math.round(MIX.s/MIX.list.length*100);
   if(MIX.s===MIX.list.length)burstSparks();
+  pushCloudScore('quiz',pct,`Конструктор: ${MIX.s}/${MIX.list.length}`);
   app.innerHTML=`<div class="card" style="text-align:center">
    <div class="mu">Конструктор завершено</div>
    ${sealHtml(MIX.s,MIX.list.length)}
    <div class="q" style="margin-top:8px">Ідеально зібрано: ${MIX.s} / ${MIX.list.length}</div>
   </div>
-  <button class="p" onclick="startMix()">Зіграти ще раз</button><button onclick="menu()">Налаштування</button>`;
+  <button class="p" onclick="startMix()">Зіграти ще раз</button>
+  <button onclick="leaderboard('quiz')">🏆 Рейтинг зміни</button>
+  <button onclick="menu()">Налаштування</button>`;
  }
 }
 function renderMix(){
@@ -506,7 +583,7 @@ function renderMix(){
   <div class="tag">Конструктор шейкера</div>
   <div class="q">${sp.n}</div>
   ${info&&info.f['Смак / ноти']?`<div style="margin-top:4px;font-style:italic;color:var(--mu)">«${info.f['Смак / ноти']}»</div>`:''}
-  <div class="mu" style="margin-top:8px">Обери всі інгредієнти (${MIX.picked.size} обрано):</div>
+  <div class="mu" style="margin-top:8px">Обери всі інгредінти (${MIX.picked.size} обрано):</div>
  </div>
  <div class="ing-grid">
   ${MIX.opts.map((t,idx)=>{
@@ -587,14 +664,16 @@ function endBlitz(){
  fx('win');
  const isRec=BL.pts>BLITZ_BEST&&BL.pts>0;
  if(isRec){BLITZ_BEST=BL.pts;try{localStorage.setItem('bbest',String(BLITZ_BEST))}catch(e){}burstSparks()}
+ if(BL.pts>0)pushCloudScore('blitz',BL.pts,`${BL.ok}/${BL.tot} точних · ${S.cat}`);
  app.innerHTML=`<div class="card" style="text-align:center">
   <div class="tag">Час вийшов!</div>
   ${sealHtml(BL.ok,Math.max(1,BL.tot))}
   <div class="q" style="font-size:25px;margin-top:8px">${BL.pts} балів ${isRec?'🏆 НОВИЙ РЕКОРД!':''}</div>
   <div style="margin-top:6px">Точних відповідей: <b>${BL.ok} з ${BL.tot}</b></div>
-  <div class="mu" style="margin-top:4px">Рекорд зміни: ${BLITZ_BEST} балів</div>
+  <div class="mu" style="margin-top:4px">Особистий рекорд: ${BLITZ_BEST} балів</div>
  </div>
  <button class="p" onclick="startBlitz()">⚡ Ще 60 секунд</button>
+ <button onclick="leaderboard('blitz')">🏆 Рейтинг зміни (Онлайн)</button>
  <button onclick="menu()">Налаштування</button>`;
 }
 
@@ -800,7 +879,16 @@ function menu(){
  const weak=Object.keys(W).filter(k=>W[k]>0).length;
  const stopCnt=Object.keys(STOP).filter(k=>STOP[k]).length;
  const b=(k,v,t)=>`<button class="${S[k]===v?'on':''}" onclick="S['${k}']=${typeof v=='number'?v:`'${v}'`};menu()">${t}</button>`;
- app.innerHTML=`<div class="card"><div class="mu">Категорія</div><select onchange="S.cat=this.value">${['Усі','🍺 Весь бар','🍽 Вся кухня',...cats].map(c=>`<option${c==S.cat?' selected':''}>${c}</option>`).join('')}</select></div>
+ app.innerHTML=`
+ <div class="card" style="padding:14px 18px">
+  <div class="mu">Хто на зміні (для рейтингу)</div>
+  <div style="display:flex;gap:8px;align-items:center">
+   <input type="text" value="${USER.name}" placeholder="Твоє ім’я..." style="margin-top:6px;flex:1" oninput="USER.name=this.value;svUser()">
+   <button class="${USER.role==='Бар'?'on':''}" style="width:auto;margin-top:6px;padding:12px 10px" onclick="USER.role='Бар';svUser();menu()">🍺 Бар</button>
+   <button class="${USER.role==='Зал'?'on':''}" style="width:auto;margin-top:6px;padding:12px 10px" onclick="USER.role='Зал';svUser();menu()">🍽 Зал</button>
+  </div>
+ </div>
+ <div class="card"><div class="mu">Категорія</div><select onchange="S.cat=this.value">${['Усі','🍺 Весь бар','🍽 Вся кухня',...cats].map(c=>`<option${c==S.cat?' selected':''}>${c}</option>`).join('')}</select></div>
  <div class="card"><div class="mu">Режим</div>
   ${b('mode','a','Тест (смаки, ноти, склад)')}
   ${b('mode','b','🥃 Сліпа дегустація (Бар)')}
@@ -810,7 +898,8 @@ function menu(){
  </div>
  ${S.mode=='a'||S.mode=='b'||S.mode=='f'?`<div class="card"><div class="mu">Питань</div><div class="row">${b('n',10,'10')}${b('n',15,'15')}${b('n',30,'30')}${b('n',999,'Усі')}</div></div>`:''}
  <button class="p" onclick="start()">Почати</button>
- <button onclick="barTool()" style="text-align:center;margin-top:10px">🍹 Бар-Шейкер (техкарти + підбір)</button>
+ <button onclick="leaderboard('blitz')" style="text-align:center;margin-top:10px">🏆 Рейтинг зміни (Онлайн)</button>
+ <button onclick="barTool()" style="text-align:center;margin-top:8px">🍹 Бар-Шейкер (техкарти + підбір)</button>
  <button onclick="keeper('ord')" style="text-align:center;margin-top:8px">📋 Блокнот зміни (Кіпер) ${ORD.length?`[${ORD.length}]`:''} ${stopCnt?`· 🚫${stopCnt}`:''}</button>
  <button onclick="cheat()" style="text-align:center;margin-top:8px">📖 Шпаргалка зміни (пошук)</button>
  <p class="mu">Складні позиції (${weak}) зустрічаються частіше.</p>`}
@@ -885,11 +974,13 @@ function mark(x,ok){if(ok){R.s++;W[key(x)]=Math.max(0,(W[key(x)]||0)-1)}else{R.b
 function nxt(){R.i++;R.i<R.q.length?ask():end()}
 function end(){
  fx('win');
+ const pct=R.q.length?Math.round(R.s/R.q.length*100):0;
  if(R.s===R.q.length&&R.q.length>0)burstSparks();
+ if(R.q.length>=10)pushCloudScore('quiz',pct,`${R.s}/${R.q.length} · ${S.cat}`);
  app.innerHTML=`<div class="card" style="text-align:center">
   <div class="mu">Результат тесту</div>
   ${sealHtml(R.s,R.q.length)}
   <div class="q" style="margin-top:8px">${R.s} / ${R.q.length}</div>
- </div>${R.bad.length?`<div class="card"><b>Повтори:</b>${R.bad.map(x=>`<p><b>${x.n}</b>${x.t?`<br><span class="mu">${x.a}</span>`:fs(x)}</p>`).join('')}</div>`:'<div class="card" style="text-align:center">Без жодної помилки! 🎉</div>'}<button class="p" onclick="start()">Ще раз</button><button onclick="menu()">Налаштування</button>`}
+ </div>${R.bad.length?`<div class="card"><b>Повтори:</b>${R.bad.map(x=>`<p><b>${x.n}</b>${x.t?`<br><span class="mu">${x.a}</span>`:fs(x)}</p>`).join('')}</div>`:'<div class="card" style="text-align:center">Без жодної помилки! 🎉</div>'}<button class="p" onclick="start()">Ще раз</button><button onclick="leaderboard('quiz')">🏆 Рейтинг зміни (Онлайн)</button><button onclick="menu()">Налаштування</button>`}
 menu();
 </script></body></html>
